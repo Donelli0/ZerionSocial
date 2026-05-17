@@ -14,7 +14,7 @@
 
 html, body{
     width: 100vw;
-    height: 100vh;
+    min-height: 100dvh;
     background-image: url(Background.jpg);
     background-size: cover;
     background-position: center;
