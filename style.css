@@ -9,7 +9,7 @@
 
     font-family: "Zen Dots", sans-serif;
     text-decoration: none;
-    font-weight: 1em;
+    font-weight: normal;
 }
 
 html, body{
@@ -56,7 +56,8 @@ section {
 
     width: 90%;
     max-width: 350px;
-    min-height: 450px;
+
+    padding-bottom: 30px;
 
     background-image: linear-gradient(to bottom, #5a46af 40%, #211678);
     border-radius: 10px;
@@ -74,7 +75,7 @@ section > h1 {
 section > h2 {
     color: white;
     font-size: 10px;
-    padding: 10px;
+    padding: 10px 20px 10px 20px;
     text-shadow: 3px 2px 6px black;
 }
 
@@ -85,7 +86,7 @@ form {
 
 .campo {
     display: flex;
-    flex-flow: column-reverse nowrap;
+    flex-flow: column nowrap;
     
     align-items: flex-start;
 
@@ -108,7 +109,7 @@ form {
 
     background-color: rgba(255, 255, 255, 0.707);
 
-    color: white;
+    color: black;
 
     outline: none;
 
@@ -122,7 +123,7 @@ form {
     box-shadow: 0px 0px 10px rgba(155, 140, 255, 0.295);
 }
 
-button, a{
+button, a.cadastro{
     width: 70%;
 
     display: block;
@@ -151,13 +152,27 @@ button, a{
 
 button:hover{
     transform: scale(1.01);
+    transform: translateY(-2px);
 
     box-shadow: 0px 0px 15px rgba(123, 92, 255, 0.6);
 }
 
-a:hover {
+a.cadastro:hover {
     transform: scale(1.01);
+    transform: translateY(-2px);
 
     box-shadow: 0px 0px 15px rgba(123, 92, 255, 0.6);
+}
+
+div.campo > a {
+    padding-top: 15px;
+    color: white;
+    margin: auto;
+    font-size: 10px;
+    text-align: center;
+}
+
+.campo input::placeholder{
+    color: rgba(0,0,0,0.5);
 }
 
