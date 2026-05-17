@@ -13,15 +13,16 @@
 }
 
 html, body{
-    width: 100vw;
+    width: 100%;
     min-height: 100dvh;
     background-image: url(Background.jpg);
     background-size: cover;
     background-position: center;
+    overflow-x: hidden;
 }
 
 main{
-    width: 100vw;
+    width: 100%;
     min-height: 100dvh;
 
     display: flex;
