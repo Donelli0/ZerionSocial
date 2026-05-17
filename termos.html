@@ -24,6 +24,8 @@
         html, body {
             width: 100%;
             min-height: 100dvh;
+            overflow-x: hidden;
+            background-color: black;
 
             background-image: url(Background.jpg);
             background-position: center;
@@ -80,10 +82,24 @@
             opacity: 0.85;
         }
 
+        .galaxy {
+            position: fixed;
+            inset: 0;
+
+            background-image: url("Background.jpg");
+            background-size: cover;
+            background-position: center;
+
+            z-index: 0;
+            transform: scale(1.05);
+        }
+
     </style>
 </head>
 
 <body>
+
+    <div class="galaxy"></div>
 
     <main>
         <section>
