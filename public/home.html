@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Home</title>
+</head>
+<body>
+    <h1>Bem-vindo, <span id="nomeUsuario"></span></h1>
+
+    <script>
+        const usuario = JSON.parse(localStorage.getItem('usuario'));
+        document.getElementById('nomeUsuario').innerText = usuario.nome;
+    </script>
+</body>
+</html>

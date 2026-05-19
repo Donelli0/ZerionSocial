@@ -1,0 +1,8 @@
+#devlog
+
+Hoje foi implementado uma parte do back end e conexão com o banco de dados. Foi adicionado os arquivos .js e foi implementado utilzando node e express para as rotas.
+Também adicionado o sistema inicial de cadastro e login, com o usuário sendo direcionado a uma página (home.html).
+
+#Possiveis Melhorias:
+-Adicionar as demais páginas da rede social.
+-Melhorar a segurança do cadastro e login com possivel criptografia nas senhas.
