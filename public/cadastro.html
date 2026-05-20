@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="./css/cadastro.css">
-    <link rel="stylesheet" href="./css/MediaQuery.css">
+    <link rel="stylesheet" href="css/cadastro.css">
+    <link rel="stylesheet" href="css/MediaQuery.css">
     <meta name="theme-color" content="#000000">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <title>Zerion</title>
@@ -21,8 +21,11 @@
     <main>
 
         <div id="logo">
-            <img src="./img/LogoParaMobile.png" alt="">
+            <a href="index.html"><img src="./img/LogoParaMobile.png" alt=""></a>
+            <h1>Compartilhe seu universo.</h1>
         </div>
+
+        
 
         <section id="login">
 
@@ -33,17 +36,22 @@
 
                 <div class="campo">
                     <label for="inome">Nome</label>
-                    <input type="text" name="nome" id="inome" placeholder="Seu nome">
+                    <input type="text" name="nome" id="inome" placeholder="Seu nome" maxlength="40" required>
                 </div>
 
                 <div class="campo">
                     <label for="inum">Telefone</label>
-                    <input type="tel" name="num" id="inum" placeholder="Número de celular">
+                    <input type="tel" name="telefone" id="itelefone" placeholder="Número de celular">
+                </div>
+
+                <div class="campo">
+                    <label for="iusuario">Usuário</label>
+                    <input type="text" name="usuario" id="iusuario" placeholder="@usuario" maxlength="20">
                 </div>
 
                 <div class="campo">
                     <label for="iemail">Email</label>
-                    <input type="text" name="email" id="iemail" placeholder="Seu E-mail">
+                    <input type="email" name="email" id="iemail" placeholder="Seu E-mail">
                 </div>
 
                 <div class="campo">
@@ -60,7 +68,7 @@
 
                 <div class="campo">
                     <label for="isenha">Senha</label>
-                    <input type="password" name="senha" id="isenha" placeholder="Sua senha">
+                    <input type="password" name="senha" id="isenha" placeholder="Sua senha" minlength="5" maxlength="30">
                 </div>
 
                 <div class="termos">
@@ -81,6 +89,9 @@
         </section>
         
     </main>
-    <script src="/js/cadastro.js"></script>
+
+    <script type="module" src="js/cadastro.js"></script>
+    <script src="https://unpkg.com/imask"></script>
+
 </body>
 </html>

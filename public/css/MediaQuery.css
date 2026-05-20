@@ -5,17 +5,24 @@
     text-align: center;
     margin-top: 70px;
 
-    display: block;
+    display: flex;
+    flex-flow: column wrap;
 
     width: 90%;
-    max-width: 600px;
+    max-width: 350px;
 
     padding-bottom: 30px;
 
-    background-image: linear-gradient(to bottom, #5a46af 40%, #211678);
+    background-image: linear-gradient(to bottom, #3753a6c8 40%, #011526c8);
     border-radius: 10px;
 
     box-shadow: 0px 0px 46px 7px black;
+
+    transition: all 0.5s ease;
+}
+
+.campo input {
+    box-shadow: 7px 5px 27px 0px black;
 }
 }
 
@@ -24,18 +31,43 @@
     section {
     text-align: center;
     margin-top: 70px;
+    margin-bottom: 70px;
 
-    display: block;
+    display: flex;
+    flex-flow: column wrap;
 
     width: 90%;
-    max-width: 700px;
+    max-width: 550px;
 
-    padding-bottom: 70px;
+    padding-bottom: 50px;
 
-    background-image: linear-gradient(to bottom, #5a46af 40%, #211678);
+    background-image: linear-gradient(to bottom, #3753a6c8 40%, #011526c8);
     border-radius: 10px;
 
     box-shadow: 0px 0px 46px 7px black;
+
+    transition: all 0.5s ease;
+}
+
+.termos {
+    padding-top: 20px;
+    margin: 10px auto 40px auto;
+    padding-left: 100px;
+    padding-right: 100px;
+
+    text-align: center;
+    font-size: 15px;
+    display: block;
+}
+
+.termos a {
+    color: white;
+    text-decoration: underline;
+    white-space: normal;
+}
+
+.campo input {
+    box-shadow: 7px 5px 27px 0px black;
 }
 
 /*Parte da UX feita por IA (Não sou UX), queria deixar bonito e nao tinha tempo*/
