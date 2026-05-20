@@ -1,3 +1,20 @@
+const telefone = document.getElementById('itelefone');
+
+const usuario = document.getElementById('iusuario');
+
+IMask(telefone, {
+  mask: '(00) 00000-0000'
+});
+
+
+/*Mascara melhorada com IA*/
+IMask(usuario, {
+  mask: '@********************',
+  definitions: {
+    '*': /[a-zA-Z0-9_]/,
+  }
+})
+
 const form = document.getElementById('formCadastro');
 
 form.addEventListener('submit', async (e) => {
