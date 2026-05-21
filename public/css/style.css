@@ -221,3 +221,13 @@ div.campo > a {
     color: rgba(0,0,0,0.5);
 }
 
+.forgot {
+    text-decoration: underline;
+    
+}
+
+.forgot:hover {
+    transform: translateY(-1px);
+    transition: 0.2s;
+}
+
