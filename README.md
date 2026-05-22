@@ -1,5 +1,5 @@
-![Logo-Zerion](/public/img/img-README/LogoReadMe.png)
 # [Zerion] – Trio
+![Logo-Zerion](/public/img/img-README/LogoReadMe.png)
 
 ## Integrantes
 |           Nome              | Matrícula  |                        GitHub                              |
