@@ -1,6 +1,10 @@
+// ================================================
+// ZERION — cadastro.js
+// ================================================
+
 const telefone = document.getElementById('itelefone');
-const usuario = document.getElementById('iusuario');
-const form = document.getElementById('formCadastro'); 
+const usuario  = document.getElementById('iusuario');
+const form     = document.getElementById('formCadastro');
 
 const maskTelefone = IMask(telefone, {
     mask: '(00) 00000-0000',
@@ -8,52 +12,71 @@ const maskTelefone = IMask(telefone, {
 
 const maskUsuario = IMask(usuario, {
     mask: '@********************',
-    definitions: {
-        '*': /[a-zA-Z0-9_]/,
-    }
+    definitions: { '*': /[a-zA-Z0-9_]/ }
 });
+
+telefone.addEventListener('input', () => {
+    telefone.style.borderColor = '';
+    telefone.setCustomValidity('');
+});
+
+usuario.addEventListener('input', () => {
+    usuario.style.borderColor = '';
+    usuario.setCustomValidity('');
+});
+
+function mostrarErro(el, msg) {
+    el.style.borderColor = '#ff4d6d';
+    el.setCustomValidity(msg);
+    el.reportValidity();
+}
+
+function limparErro(el) {
+    el.style.borderColor = 'green';
+    el.setCustomValidity('');
+}
 
 form.addEventListener('submit', async (e) => {
     e.preventDefault();
 
     if (!maskTelefone.masked.isComplete) {
-        telefone.style.borderColor = 'red';
-        telefone.focus();
+        mostrarErro(telefone, 'Preencha o telefone completo');
         return;
-    } else {
-      telefone.style.borderColor = 'green';
-    }
+    } else { limparErro(telefone); }
 
     if (maskUsuario.unmaskedValue.length < 4) {
-        usuario.style.borderColor = 'red';
-        usuario.focus();
+        mostrarErro(usuario, 'O usuário deve ter pelo menos 4 caracteres');
         return;
-    } else {
-      usuario.style.borderColor = 'green';
-    }
+    } else { limparErro(usuario); }
 
-    const nome = document.getElementById('inome').value;
-    const email = document.getElementById('iemail').value;
+    const nome   = document.getElementById('inome').value;
+    const email  = document.getElementById('iemail').value;
     const genero = document.getElementById('igenero').value;
-    const senha = document.getElementById('isenha').value;
+    const senha  = document.getElementById('isenha').value;
 
-    const resposta = await fetch('http://localhost:3000/usuarios/cadastro', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ 
-            nome, 
-            telefone: maskTelefone.unmaskedValue,
-            username: maskUsuario.value, 
-            email, 
-            genero, 
-            senha 
-        })
-    });
+    try {
+        const resposta = await fetch('http://localhost:3000/usuarios/cadastro', {
+            method:  'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body:    JSON.stringify({
+                nome,
+                telefone: maskTelefone.unmaskedValue,
+                username: maskUsuario.value,
+                email,
+                genero,
+                senha
+            })
+        });
 
-    if (resposta.status === 200) {
-        alert('Cadastro realizado! Faça login.');
-        window.location.href = '/index.html';
-    } else {
-        alert('Erro ao cadastrar');
+        if (resposta.ok) {
+            window.location.href = '/index.html';
+        } else {
+            const dados = await resposta.json();
+            alert(dados.msg || 'Erro ao cadastrar. Verifique os dados.');
+        }
+
+    } catch (erro) {
+        console.error("Erro ao cadastrar:", erro);
+        alert('Erro ao conectar com o servidor');
     }
 });

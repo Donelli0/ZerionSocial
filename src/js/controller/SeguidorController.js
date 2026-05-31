@@ -1,0 +1,53 @@
+// ================================================
+// SeguidorController.js — src/js/controller/
+// ================================================
+const SeguidorServiceInstance = require('../service/SeguidorService');
+
+class SeguidorController {
+
+    async seguir(req, res) {
+        try {
+            const { seguidor_id, seguindo_id } = req.body;
+            await SeguidorServiceInstance.seguir(seguidor_id, seguindo_id);
+            res.json({ msg: 'Seguindo' });
+        } catch (error) {
+            console.error(error);
+            res.status(500).json({ msg: 'Erro ao seguir' });
+        }
+    }
+
+    async desseguir(req, res) {
+        try {
+            const { seguidor_id, seguindo_id } = req.body;
+            await SeguidorServiceInstance.desseguir(seguidor_id, seguindo_id);
+            res.json({ msg: 'Deixou de seguir' });
+        } catch (error) {
+            console.error(error);
+            res.status(500).json({ msg: 'Erro ao desseguir' });
+        }
+    }
+
+    async contar(req, res) {
+        try {
+            const { id } = req.params;
+            const contagem = await SeguidorServiceInstance.contar(id);
+            res.json(contagem);
+        } catch (error) {
+            console.error(error);
+            res.status(500).json({ msg: 'Erro ao contar seguidores' });
+        }
+    }
+
+    async checar(req, res) {
+        try {
+            const { seguidor_id, seguindo_id } = req.query;
+            const seguindo = await SeguidorServiceInstance.checar(seguidor_id, seguindo_id);
+            res.json({ seguindo });
+        } catch (error) {
+            console.error(error);
+            res.status(500).json({ msg: 'Erro ao checar' });
+        }
+    }
+}
+
+module.exports = new SeguidorController();

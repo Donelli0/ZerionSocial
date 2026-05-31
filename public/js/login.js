@@ -1,3 +1,7 @@
+// ================================================
+// ZERION — login.js
+// ================================================
+
 const form = document.getElementById('formLogin');
 
 form.addEventListener('submit', async (e) => {
@@ -5,21 +9,27 @@ form.addEventListener('submit', async (e) => {
 
     const email = document.getElementById('iemail').value;
     const senha = document.getElementById('isenha').value;
+    const erroEl = document.getElementById('mensagem-erro');
 
-    const resposta = await fetch('http://localhost:3000/usuarios/login', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, senha })
-    })
+    if (erroEl) erroEl.textContent = "";
 
-    if (resposta.status === 200) {
-        const usuario = await resposta.json();
+    try {
+        const resposta = await fetch('http://localhost:3000/usuarios/login', {
+            method:  'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body:    JSON.stringify({ email, senha })
+        });
 
-        // guarda usuário logado
-        localStorage.setItem('usuario', JSON.stringify(usuario)); //RISCO DE SEGURANÇA express-session e cookie-parser
+        if (resposta.ok) {
+            const usuario = await resposta.json();
+            localStorage.setItem('usuario', JSON.stringify(usuario));
+            window.location.href = '/feed.html';
+        } else {
+            if (erroEl) erroEl.textContent = 'Email ou senha inválidos';
+        }
 
-        window.location.href = '/home.html';
-    } else {
-        document.getElementById('mensagem-erro').textContent = 'Email ou senha inválidos';
+    } catch (erro) {
+        console.error("Erro ao fazer login:", erro);
+        if (erroEl) erroEl.textContent = 'Erro ao conectar com o servidor';
     }
 });
