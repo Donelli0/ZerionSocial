@@ -1,7 +1,5 @@
-// ================================================
-// LikeController.js — src/js/controller/
-// ================================================
-const LikeServiceInstance = require('../service/LikeService');
+const LikeServiceInstance      = require('../service/LikeService');
+const NotificacaoService       = require('../service/NotificacaoService');
 
 class LikeController {
 
@@ -10,6 +8,11 @@ class LikeController {
             const { post_id, usuario_id } = req.body;
             await LikeServiceInstance.curtir(post_id, usuario_id);
             const total = await LikeServiceInstance.contar(post_id);
+
+            // Notifica o dono do post
+            const dono = await NotificacaoService.buscarDonoDoPosto(post_id);
+            if (dono) await NotificacaoService.criar(dono, usuario_id, 'like', post_id);
+
             res.json({ total });
         } catch (error) {
             console.error(error);
@@ -22,6 +25,11 @@ class LikeController {
             const { post_id, usuario_id } = req.body;
             await LikeServiceInstance.descurtir(post_id, usuario_id);
             const total = await LikeServiceInstance.contar(post_id);
+
+            // Remove a notificação de like
+            const dono = await NotificacaoService.buscarDonoDoPosto(post_id);
+            if (dono) await NotificacaoService.deletar(dono, usuario_id, 'like', post_id);
+
             res.json({ total });
         } catch (error) {
             console.error(error);

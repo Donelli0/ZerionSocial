@@ -1,6 +1,7 @@
 const express = require('express');
 const cors    = require('cors');
 
+const NotificacaoController = require('./src/js/controller/NotificacaoController');
 const PostController        = require('./src/js/controller/PostController');
 const UsuarioController     = require('./src/js/controller/UsuarioController');
 const LikeController        = require('./src/js/controller/LikeController');
@@ -53,5 +54,12 @@ app.delete('/seguidores',           (req, res) => SeguidorController.desseguir(r
 app.get('/mensagens/conversas/:id', (req, res) => MensagemController.listarConversas(req, res));
 app.post('/mensagens',              (req, res) => MensagemController.enviar(req, res));
 app.get('/mensagens/:id',           (req, res) => MensagemController.conversa(req, res));
+
+
+// Notificações
+app.get('/notificacoes/:usuario_id',        (req, res) => NotificacaoController.listar(req, res));
+app.get('/notificacoes/:usuario_id/nao-lidas', (req, res) => NotificacaoController.contarNaoLidas(req, res));
+app.put('/notificacoes/:usuario_id/lidas',  (req, res) => NotificacaoController.marcarLidas(req, res));
+
 
 app.listen(3000, () => console.log('Zerion rodando em http://localhost:3000'));

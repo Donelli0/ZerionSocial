@@ -1,5 +1,5 @@
-// src/js/controller/ComentarioController.js
-const ComentarioService = require('../service/ComentarioService');
+const ComentarioService  = require('../service/ComentarioService');
+const NotificacaoServiceC = require('../service/NotificacaoService');
 
 class ComentarioController {
 
@@ -9,6 +9,11 @@ class ComentarioController {
             if (!conteudo?.trim()) return res.status(400).json({ msg: 'Comentário vazio' });
             await ComentarioService.comentar(post_id, usuario_id, conteudo);
             const total = await ComentarioService.contar(post_id);
+
+            // Notifica o dono do post
+            const dono = await NotificacaoServiceC.buscarDonoDoPosto(post_id);
+            if (dono) await NotificacaoServiceC.criar(dono, usuario_id, 'comentario', post_id);
+
             res.json({ total });
         } catch (error) {
             console.error(error);

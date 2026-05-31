@@ -1,7 +1,5 @@
-// ================================================
-// SeguidorController.js — src/js/controller/
-// ================================================
 const SeguidorServiceInstance = require('../service/SeguidorService');
+const NotificacaoServiceS     = require('../service/NotificacaoService');
 
 class SeguidorController {
 
@@ -9,6 +7,10 @@ class SeguidorController {
         try {
             const { seguidor_id, seguindo_id } = req.body;
             await SeguidorServiceInstance.seguir(seguidor_id, seguindo_id);
+
+            // Notifica quem foi seguido
+            await NotificacaoServiceS.criar(seguindo_id, seguidor_id, 'seguidor', null);
+
             res.json({ msg: 'Seguindo' });
         } catch (error) {
             console.error(error);
@@ -20,6 +22,10 @@ class SeguidorController {
         try {
             const { seguidor_id, seguindo_id } = req.body;
             await SeguidorServiceInstance.desseguir(seguidor_id, seguindo_id);
+
+            // Remove notificação de seguidor
+            await NotificacaoServiceS.deletar(seguindo_id, seguidor_id, 'seguidor', null);
+
             res.json({ msg: 'Deixou de seguir' });
         } catch (error) {
             console.error(error);

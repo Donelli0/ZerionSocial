@@ -24,7 +24,10 @@
             <nav class="nav-lateral">
                 <a href="feed.html"><i class="fa-solid fa-house"></i><span class="label-nav">Início</span></a>
                 <a href="busca.html"><i class="fa-solid fa-magnifying-glass"></i><span class="label-nav">Explorar</span></a>
-                <a href="notificacoes.html" class="ativo"><i class="fa-solid fa-bell"></i><span class="label-nav">Notificações</span></a>
+                <a href="notificacoes.html" class="ativo">
+                    <i class="fa-solid fa-bell"></i>
+                    <span class="label-nav">Notificações</span>
+                </a>
                 <a href="mensagens.html"><i class="fa-solid fa-message"></i><span class="label-nav">Mensagens</span></a>
                 <a href="perfil.html"><i class="fa-solid fa-user-astronaut"></i><span class="label-nav">Perfil</span></a>
             </nav>
@@ -48,7 +51,26 @@
         <nav id="navegacao">
             <ul>
                 <li><a href="feed.html"><i class="fa-solid fa-house"></i></a></li>
-                <li><a href="notificacoes.html"><i class="fa-solid fa-bell" style="color:#00f2fe;"></i></a></li>
+                <li>
+                    <a href="notificacoes.html" style="position:relative;">
+                        <i class="fa-solid fa-bell" style="color:#00f2fe;"></i>
+                        <span class="badge-notif" style="
+                            display:none;
+                            position:absolute;
+                            top:-4px;
+                            right:-4px;
+                            background:#fa709a;
+                            color:white;
+                            font-size:0.6rem;
+                            width:16px;
+                            height:16px;
+                            border-radius:50%;
+                            align-items:center;
+                            justify-content:center;
+                            font-family:'Zen Dots',sans-serif;
+                        "></span>
+                    </a>
+                </li>
                 <li><a href="mensagens.html"><i class="fa-solid fa-message"></i></a></li>
                 <li><a href="busca.html"><i class="fa-solid fa-magnifying-glass"></i></a></li>
                 <li><a href="perfil.html"><i class="fa-solid fa-user-astronaut"></i></a></li>

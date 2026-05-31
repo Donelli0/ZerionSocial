@@ -4,43 +4,179 @@
 
 const usuarioLogado = JSON.parse(localStorage.getItem("usuario"));
 
+// ================================================
+// TIMESTAMP RELATIVO
+// ================================================
+
+function tempoRelativo(dataStr) {
+    const agora = new Date();
+    const data  = new Date(dataStr);
+    const diff  = Math.floor((agora - data) / 1000);
+
+    if (diff < 60)         return "agora";
+    if (diff < 3600)       return `${Math.floor(diff / 60)}min`;
+    if (diff < 86400)      return `${Math.floor(diff / 3600)}h`;
+    if (diff < 86400 * 7)  return `${Math.floor(diff / 86400)}d`;
+    if (diff < 86400 * 30) return `${Math.floor(diff / (86400 * 7))}sem`;
+    return data.toLocaleDateString("pt-BR", { day: "2-digit", month: "short" });
+}
+
+// ================================================
+// TEXTO E ÍCONE POR TIPO
+// ================================================
+
+function infoNotificacao(tipo, atorUsername) {
+    const nome = atorUsername.startsWith("@") ? atorUsername : `@${atorUsername}`;
+    switch (tipo) {
+        case "like":
+            return {
+                icone: "fa-solid fa-heart",
+                cor:   "#fa709a",
+                texto: `${nome} curtiu seu post`
+            };
+        case "repost":
+            return {
+                icone: "fa-solid fa-retweet",
+                cor:   "var(--neon-ciano)",
+                texto: `${nome} repostou seu post`
+            };
+        case "comentario":
+            return {
+                icone: "fa-solid fa-comment",
+                cor:   "var(--neon-ciano)",
+                texto: `${nome} comentou no seu post`
+            };
+        case "seguidor":
+            return {
+                icone: "fa-solid fa-user-plus",
+                cor:   "#a78bfa",
+                texto: `${nome} começou a te seguir`
+            };
+        default:
+            return {
+                icone: "fa-solid fa-bell",
+                cor:   "var(--txt-poeira)",
+                texto: `${nome} interagiu com você`
+            };
+    }
+}
+
+// ================================================
+// CARREGAR NOTIFICAÇÕES
+// ================================================
+
 async function carregarNotificacoes() {
+    if (!usuarioLogado) return;
+
     const lista = document.getElementById("lista-notificacoes");
+    if (!lista) return;
 
-    // Por enquanto exibe notificações estáticas elegantes
-    // Quando houver rota de notificações no back-end, substitui pelo fetch
-    const notificacoes = [
-        { tipo: "like",     texto: "Suas publicações receberam curtidas recentemente", tempo: "agora",  nova: true  },
-        { tipo: "seguidor", texto: "Novos usuários estão na plataforma",               tempo: "hoje",   nova: true  },
-        { tipo: "sistema",  texto: "Bem-vindo à Zerion! Explore e conecte-se.",        tempo: "sempre", nova: false },
-    ];
+    try {
+        const resposta = await fetch(`http://localhost:3000/notificacoes/${usuarioLogado.id}`);
+        const notifs   = await resposta.json();
 
-    const icones = {
-        like:     { icon: "fa-solid fa-heart",    cor: "#fa709a" },
-        seguidor: { icon: "fa-solid fa-user-plus", cor: "#00f2fe" },
-        sistema:  { icon: "fa-solid fa-satellite", cor: "#9d94b8" },
-        comentario: { icon: "fa-solid fa-comment", cor: "#a78bfa" },
-    };
+        // Marca todas como lidas ao abrir a página
+        await fetch(`http://localhost:3000/notificacoes/${usuarioLogado.id}/lidas`, {
+            method: "PUT"
+        });
 
-    lista.innerHTML = "";
+        // Zera badge
+        atualizarBadge(0);
 
-    notificacoes.forEach(n => {
-        const ic = icones[n.tipo] || icones.sistema;
-        const item = document.createElement("li");
-        item.classList.add("notif-item");
-        if (n.nova) item.classList.add("notif-nova");
+        lista.innerHTML = "";
 
-        item.innerHTML = `
-            <div class="notif-avatar"></div>
-            <div class="notif-info">
-                <span class="notif-texto">${n.texto}</span>
-                <span class="notif-tempo">${n.tempo}</span>
-            </div>
-            <i class="${ic.icon} notif-icone" style="color:${ic.cor};"></i>
-        `;
+        if (notifs.length === 0) {
+            lista.innerHTML = `
+                <li class="feed-vazio">
+                    <i class="fa-solid fa-bell-slash"></i>
+                    <p>Nenhuma notificação ainda.</p>
+                </li>`;
+            return;
+        }
 
-        lista.appendChild(item);
+        notifs.forEach(n => {
+            const info  = infoNotificacao(n.tipo, n.ator_username);
+            const tempo = tempoRelativo(n.criado_em);
+
+            const avatarStyle = n.ator_foto
+                ? `background-image:url(${n.ator_foto});background-size:cover;background-position:center;`
+                : "";
+            const avatarIcon = n.ator_foto ? "" : `<i class="fa-solid fa-user-astronaut"></i>`;
+
+            const badge = n.ator_verificado
+                ? `<i class="fa-solid fa-circle-check badge-verificado" title="Verificado"></i>`
+                : "";
+
+            const item = document.createElement("li");
+            item.classList.add("notif-item");
+            if (!n.lida) item.classList.add("notif-nova");
+
+            // Clique vai para o perfil do ator ou para o post
+            item.style.cursor = "pointer";
+            item.addEventListener("click", () => {
+                if (n.tipo === "seguidor") {
+                    window.location.href = `perfil.html?id=${n.ator_id}`;
+                } else if (n.post_id) {
+                    window.location.href = `perfil.html?id=${n.ator_id}`;
+                }
+            });
+
+            item.innerHTML = `
+                <div class="notif-avatar" style="${avatarStyle}">${avatarIcon}</div>
+                <div class="notif-info">
+                    <p class="notif-texto">
+                        <strong>${n.ator_username.startsWith("@") ? n.ator_username : "@" + n.ator_username}</strong>
+                        ${badge}
+                        ${tipoTexto(n.tipo)}
+                    </p>
+                    <span class="notif-tempo">${tempo}</span>
+                </div>
+                <i class="${info.icone} notif-icone" style="color:${info.cor};"></i>
+            `;
+
+            lista.appendChild(item);
+        });
+
+    } catch (erro) {
+        console.error("Erro ao carregar notificações:", erro);
+    }
+}
+
+function tipoTexto(tipo) {
+    switch (tipo) {
+        case "like":      return "curtiu seu post";
+        case "repost":    return "repostou seu post";
+        case "comentario": return "comentou no seu post";
+        case "seguidor":  return "começou a te seguir";
+        default:          return "interagiu com você";
+    }
+}
+
+// ================================================
+// BADGE DE NÃO LIDAS — atualiza o ícone do sino
+// ================================================
+
+function atualizarBadge(total) {
+    // Feed e outras páginas que têm o ícone de sino
+    document.querySelectorAll(".badge-notif").forEach(el => {
+        el.textContent = total > 0 ? (total > 9 ? "9+" : total) : "";
+        el.style.display = total > 0 ? "flex" : "none";
     });
 }
+
+async function carregarBadge() {
+    if (!usuarioLogado) return;
+    try {
+        const resposta = await fetch(`http://localhost:3000/notificacoes/${usuarioLogado.id}/nao-lidas`);
+        const { total } = await resposta.json();
+        atualizarBadge(total);
+    } catch (erro) {
+        console.error("Erro ao carregar badge:", erro);
+    }
+}
+
+// ================================================
+// INICIA
+// ================================================
 
 carregarNotificacoes();
