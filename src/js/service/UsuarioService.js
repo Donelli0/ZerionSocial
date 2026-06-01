@@ -1,19 +1,31 @@
+const bcrypt           = require('bcrypt');
 const UsuarioRepository = require('../repository/UsuarioRepository');
-const Usuario = require('../model/Usuario');
+const Usuario           = require('../model/Usuario');
+
+const SALT_ROUNDS = 12; // custo do hash — 12 é seguro e rápido o suficiente
 
 class UsuarioService {
 
     async cadastrar(nome, telefone, username, email, genero, senha) {
-        const usuario = new Usuario(null, nome, telefone, username, email, genero, senha);
+        // Criptografa a senha antes de salvar
+        const senhaHash = await bcrypt.hash(senha, SALT_ROUNDS);
+        const usuario   = new Usuario(null, nome, telefone, username, email, genero, senhaHash);
         return await UsuarioRepository.salvar(usuario);
     }
 
     async login(email, senha) {
         const [usuarios] = await UsuarioRepository.buscarPorEmail(email);
         if (usuarios.length === 0) return null;
+
         const usuario = usuarios[0];
-        if (usuario.senha !== senha) return null;
-        return usuario;
+
+        // Compara a senha digitada com o hash salvo no banco
+        const senhaCorreta = await bcrypt.compare(senha, usuario.senha);
+        if (!senhaCorreta) return null;
+
+        // Remove a senha do objeto antes de retornar ao front
+        const { senha: _, ...usuarioSemSenha } = usuario;
+        return usuarioSemSenha;
     }
 
     async buscar(termo) {
