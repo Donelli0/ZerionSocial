@@ -1,0 +1,6 @@
+Arrumar para aparecer quem está seguindo quem no perfil.
+Arrumar a chegada de direct sem F5.
+Arrumar a formatação dos comentários de post no perfil.
+Email repetido sem tratamento de erro.
+Favicon
+ID incrementando quando dá erro.
