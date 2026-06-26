@@ -12,7 +12,7 @@ async function carregarSugestoesSidebar() {
     const user = JSON.parse(localStorage.getItem("usuario"));
 
     try {
-        const resposta = await fetch("http://localhost:3000/usuarios/buscar?termo=");
+        const resposta = await fetch("/usuarios/buscar?termo=");
         const usuarios = await resposta.json();
 
         const sugestoes = usuarios
@@ -30,7 +30,7 @@ async function carregarSugestoesSidebar() {
             sugestoes.map(async u => {
                 if (!user) return false;
                 try {
-                    const res = await fetch(`http://localhost:3000/seguidores/checar?seguidor_id=${user.id}&seguindo_id=${u.id}`);
+                    const res = await fetch(`/seguidores/checar?seguidor_id=${user.id}&seguindo_id=${u.id}`);
                     const { seguindo } = await res.json();
                     return seguindo;
                 } catch { return false; }
@@ -76,7 +76,7 @@ async function carregarSugestoesSidebar() {
                 const seguindo = btn.classList.contains("seguindo");
 
                 try {
-                    await fetch("http://localhost:3000/seguidores", {
+                    await fetch("/seguidores", {
                         method: seguindo ? "DELETE" : "POST",
                         headers: { "Content-Type": "application/json" },
                         body: JSON.stringify({ seguidor_id: user.id, seguindo_id: u.id })

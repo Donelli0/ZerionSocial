@@ -83,7 +83,7 @@ botaoPostar.addEventListener("click", async () => {
     botaoPostar.disabled    = true;
 
     try {
-        const resposta = await fetch("http://localhost:3000/posts", {
+        const resposta = await fetch("/posts", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
@@ -116,7 +116,7 @@ botaoPostar.addEventListener("click", async () => {
 async function carregarPosts() {
     try {
         const viewerId = usuarioLogado?.id || 0;
-        const resposta = await fetch(`http://localhost:3000/posts?viewer_id=${viewerId}`);
+        const resposta = await fetch(`/posts?viewer_id=${viewerId}`);
         const posts    = await resposta.json();
 
         publicacoes.innerHTML = "";
@@ -289,7 +289,7 @@ async function deletarPost(post_id, itemEl) {
     if (!confirm("Excluir esta transmissão?")) return;
 
     try {
-        const resposta = await fetch(`http://localhost:3000/posts/${post_id}`, {
+        const resposta = await fetch(`/posts/${post_id}`, {
             method: "DELETE",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ usuario_id: usuarioLogado.id })
@@ -319,7 +319,7 @@ async function toggleLike(e) {
     const jaCurtiu = btn.classList.contains("curtido");
 
     try {
-        const resposta = await fetch("http://localhost:3000/likes", {
+        const resposta = await fetch("/likes", {
             method: jaCurtiu ? "DELETE" : "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ post_id, usuario_id: usuarioLogado.id })
@@ -390,7 +390,7 @@ async function toggleComentarios(e) {
 
 async function carregarComentarios(post_id, secao) {
     try {
-        const resposta    = await fetch(`http://localhost:3000/comentarios/${post_id}`);
+        const resposta    = await fetch(`/comentarios/${post_id}`);
         const comentarios = await resposta.json();
         const lista       = secao.querySelector(".lista-comentarios");
         lista.innerHTML   = "";
@@ -421,7 +421,7 @@ async function enviarComentario(post_id, input, postCard) {
     if (!conteudo || !usuarioLogado) return;
 
     try {
-        const resposta = await fetch("http://localhost:3000/comentarios", {
+        const resposta = await fetch("/comentarios", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ post_id, usuario_id: usuarioLogado.id, conteudo })
@@ -467,7 +467,7 @@ async function toggleRepost(e) {
     const jaRepostou = btn.classList.contains("repostado");
 
     try {
-        const resposta = await fetch("http://localhost:3000/reposts", {
+        const resposta = await fetch("/reposts", {
             method: jaRepostou ? "DELETE" : "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ post_id, usuario_id: usuarioLogado.id })

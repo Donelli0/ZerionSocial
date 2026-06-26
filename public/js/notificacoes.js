@@ -74,11 +74,11 @@ async function carregarNotificacoes() {
     if (!lista) return;
 
     try {
-        const resposta = await fetch(`http://localhost:3000/notificacoes/${usuarioLogado.id}`);
+        const resposta = await fetch(`/notificacoes/${usuarioLogado.id}`);
         const notifs   = await resposta.json();
 
         // Marca todas como lidas ao abrir a página
-        await fetch(`http://localhost:3000/notificacoes/${usuarioLogado.id}/lidas`, {
+        await fetch(`/notificacoes/${usuarioLogado.id}/lidas`, {
             method: "PUT"
         });
 
@@ -171,7 +171,7 @@ function atualizarBadge(total) {
 async function carregarBadge() {
     if (!usuarioLogado) return;
     try {
-        const resposta = await fetch(`http://localhost:3000/notificacoes/${usuarioLogado.id}/nao-lidas`);
+        const resposta = await fetch(`/notificacoes/${usuarioLogado.id}/nao-lidas`);
         const { total } = await resposta.json();
         atualizarBadge(total);
     } catch (erro) {

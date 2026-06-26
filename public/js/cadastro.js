@@ -57,7 +57,7 @@ form.addEventListener('submit', async (e) => {
     const senha  = document.getElementById('isenha').value;
 
     try {
-        const resposta = await fetch('http://localhost:3000/usuarios/cadastro', {
+        const resposta = await fetch('/usuarios/cadastro', {
             method:  'POST',
             headers: { 'Content-Type': 'application/json' },
             body:    JSON.stringify({

@@ -29,7 +29,7 @@ inputBusca.addEventListener("input", async () => {
     secaoResultados.style.display = "block";
 
     try {
-        const resposta = await fetch(`http://localhost:3000/usuarios/buscar?termo=${encodeURIComponent(termo)}`);
+        const resposta = await fetch(`/usuarios/buscar?termo=${encodeURIComponent(termo)}`);
         const usuarios = await resposta.json();
 
         listaResultados.innerHTML = "";
@@ -96,7 +96,7 @@ btnLimpar.addEventListener("click", limparBusca);
 
 async function carregarSugestoes() {
     try {
-        const resposta = await fetch("http://localhost:3000/usuarios/buscar?termo=");
+        const resposta = await fetch("/usuarios/buscar?termo=");
         const usuarios = await resposta.json();
 
         let lista = secaoSugestoes.querySelector(".lista-usuarios");

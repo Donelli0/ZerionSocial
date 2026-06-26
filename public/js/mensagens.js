@@ -46,7 +46,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 async function abrirChatPorId(id) {
     try {
-        const resposta = await fetch(`http://localhost:3000/usuarios/${id}`);
+        const resposta = await fetch(`/usuarios/${id}`);
         const usuario  = await resposta.json();
         const username = usuario.username.startsWith("@")
             ? usuario.username.slice(1)
@@ -66,7 +66,7 @@ async function carregarConversas() {
     if (!usuarioLogado) return;
 
     try {
-        const resposta  = await fetch(`http://localhost:3000/mensagens/conversas/${usuarioLogado.id}`);
+        const resposta  = await fetch(`/mensagens/conversas/${usuarioLogado.id}`);
         const conversas = await resposta.json();
 
         const lista = document.querySelector(".conversas");
@@ -132,7 +132,7 @@ async function carregarMensagens() {
     if (!destinatarioAtivo || !usuarioLogado) return;
 
     try {
-        const resposta  = await fetch(`http://localhost:3000/mensagens/${destinatarioAtivo}?meu_id=${usuarioLogado.id}`);
+        const resposta  = await fetch(`/mensagens/${destinatarioAtivo}?meu_id=${usuarioLogado.id}`);
         const mensagens = await resposta.json();
 
         elChatMensagens.innerHTML = "";
@@ -155,7 +155,7 @@ async function enviarMensagem() {
     if (texto === "" || !destinatarioAtivo || !usuarioLogado) return;
 
     try {
-        const resposta = await fetch("http://localhost:3000/mensagens", {
+        const resposta = await fetch("/mensagens", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({

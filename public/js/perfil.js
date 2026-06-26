@@ -69,7 +69,7 @@ if (btnVoltar) {
 
 async function carregarPerfil() {
     try {
-        const resUser = await fetch(`http://localhost:3000/usuarios/${perfilId}`);
+        const resUser = await fetch(`/usuarios/${perfilId}`);
         const usuario = await resUser.json();
 
         const username = usuario.username.startsWith("@") ? usuario.username : `@${usuario.username}`;
@@ -98,7 +98,7 @@ async function carregarPerfil() {
             fotoPerfil.innerHTML = `<i class="fa-solid fa-user-astronaut"></i>`;
         }
 
-        const resSeg   = await fetch(`http://localhost:3000/seguidores/${perfilId}`);
+        const resSeg   = await fetch(`/seguidores/${perfilId}`);
         const contagem = await resSeg.json();
         setContador("contagem-seguindo",   contagem.seguindo);
         setContador("contagem-seguidores", contagem.seguidores);
@@ -117,7 +117,7 @@ async function carregarPerfil() {
             btnFoto.style.cursor        = "default";
 
             if (usuarioLogado) {
-                const resCheck     = await fetch(`http://localhost:3000/seguidores/checar?seguidor_id=${usuarioLogado.id}&seguindo_id=${perfilId}`);
+                const resCheck     = await fetch(`/seguidores/checar?seguidor_id=${usuarioLogado.id}&seguindo_id=${perfilId}`);
                 const { seguindo } = await resCheck.json();
                 if (seguindo) {
                     btnSeguir.classList.add("seguindo");
@@ -169,7 +169,7 @@ async function carregarAba(tab) {
 async function carregarPosts() {
     try {
         const viewerId = usuarioLogado?.id || 0;
-        const resPosts = await fetch(`http://localhost:3000/posts/usuario/${perfilId}?viewer_id=${viewerId}`);
+        const resPosts = await fetch(`/posts/usuario/${perfilId}?viewer_id=${viewerId}`);
         const posts    = await resPosts.json();
 
         setContador("contagem-posts", posts.length);
@@ -200,7 +200,7 @@ async function carregarPosts() {
 async function carregarLikes() {
     try {
         const viewerId = usuarioLogado?.id || 0;
-        const res   = await fetch(`http://localhost:3000/posts/curtidos/${perfilId}?viewer_id=${viewerId}`);
+        const res   = await fetch(`/posts/curtidos/${perfilId}?viewer_id=${viewerId}`);
         const posts = await res.json();
 
         listaPosts.innerHTML = "";
@@ -230,7 +230,7 @@ async function carregarLikes() {
 async function carregarComentados() {
     try {
         const viewerId = usuarioLogado?.id || 0;
-        const res   = await fetch(`http://localhost:3000/posts/comentados/${perfilId}?viewer_id=${viewerId}`);
+        const res   = await fetch(`/posts/comentados/${perfilId}?viewer_id=${viewerId}`);
         const posts = await res.json();
 
         listaPosts.innerHTML = "";
@@ -427,7 +427,7 @@ async function deletarPost(post_id, itemEl) {
     if (!confirm("Excluir esta transmissão?")) return;
 
     try {
-        const resposta = await fetch(`http://localhost:3000/posts/${post_id}`, {
+        const resposta = await fetch(`/posts/${post_id}`, {
             method: "DELETE",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ usuario_id: usuarioLogado.id })
@@ -462,7 +462,7 @@ async function toggleLike(e) {
     const jaCurtiu = btn.classList.contains("curtido");
 
     try {
-        const res = await fetch("http://localhost:3000/likes", {
+        const res = await fetch("/likes", {
             method:  jaCurtiu ? "DELETE" : "POST",
             headers: { "Content-Type": "application/json" },
             body:    JSON.stringify({ post_id, usuario_id: usuarioLogado.id })
@@ -533,7 +533,7 @@ async function toggleComentarios(e) {
 
 async function carregarComentariosCard(post_id, secao) {
     try {
-        const resposta    = await fetch(`http://localhost:3000/comentarios/${post_id}`);
+        const resposta    = await fetch(`/comentarios/${post_id}`);
         const comentarios = await resposta.json();
         const lista       = secao.querySelector(".lista-comentarios");
         lista.innerHTML   = "";
@@ -564,7 +564,7 @@ async function enviarComentario(post_id, input, postCard) {
     if (!conteudo || !usuarioLogado) return;
 
     try {
-        const resposta = await fetch("http://localhost:3000/comentarios", {
+        const resposta = await fetch("/comentarios", {
             method:  "POST",
             headers: { "Content-Type": "application/json" },
             body:    JSON.stringify({ post_id, usuario_id: usuarioLogado.id, conteudo })
@@ -610,7 +610,7 @@ async function toggleRepost(e) {
     const jaRepostou = btn.classList.contains("repostado");
 
     try {
-        const resposta = await fetch("http://localhost:3000/reposts", {
+        const resposta = await fetch("/reposts", {
             method:  jaRepostou ? "DELETE" : "POST",
             headers: { "Content-Type": "application/json" },
             body:    JSON.stringify({ post_id, usuario_id: usuarioLogado.id })
@@ -653,7 +653,7 @@ btnSeguir.addEventListener("click", async () => {
     if (!usuarioLogado) return;
     const seguindo = btnSeguir.classList.contains("seguindo");
     try {
-        await fetch("http://localhost:3000/seguidores", {
+        await fetch("/seguidores", {
             method:  seguindo ? "DELETE" : "POST",
             headers: { "Content-Type": "application/json" },
             body:    JSON.stringify({ seguidor_id: usuarioLogado.id, seguindo_id: perfilId })
@@ -661,7 +661,7 @@ btnSeguir.addEventListener("click", async () => {
         if (seguindo) { btnSeguir.classList.remove("seguindo"); btnSeguir.textContent = "Seguir"; }
         else { btnSeguir.classList.add("seguindo"); btnSeguir.innerHTML = '<i class="fa-solid fa-check"></i> Seguindo'; }
 
-        const resSeg   = await fetch(`http://localhost:3000/seguidores/${perfilId}`);
+        const resSeg   = await fetch(`/seguidores/${perfilId}`);
         const contagem = await resSeg.json();
         setContador("contagem-seguidores", contagem.seguidores);
 
@@ -685,7 +685,7 @@ if (ehMeuPerfil) {
             fotoPerfil.style.backgroundPosition = "center";
             fotoPerfil.innerHTML = "";
             try {
-                await fetch(`http://localhost:3000/usuarios/${usuarioLogado.id}/foto`, {
+                await fetch(`/usuarios/${usuarioLogado.id}/foto`, {
                     method: "PUT", headers: { "Content-Type": "application/json" },
                     body: JSON.stringify({ foto: base64 })
                 });
