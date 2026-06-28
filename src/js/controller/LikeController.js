@@ -1,16 +1,9 @@
-// ================================================
-// ZERION — LikeController.js
-// Controller para rotas de like.
-// ================================================
-
 const LikeServiceInstance      = require('../service/LikeService');
 const NotificacaoService       = require('../service/NotificacaoService');
 
-// Classe que gerencia like controller
 
 class LikeController {
 
-    // Executa a ação de curtir
 
     async curtir(req, res) {
         try {
@@ -18,7 +11,6 @@ class LikeController {
             await LikeServiceInstance.curtir(post_id, usuario_id);
             const total = await LikeServiceInstance.contar(post_id);
 
-            // Notifica o dono do post
             const dono = await NotificacaoService.buscarDonoDoPosto(post_id);
             if (dono) await NotificacaoService.criar(dono, usuario_id, 'like', post_id);
 
@@ -29,7 +21,6 @@ class LikeController {
         }
     }
 
-    // Executa a ação de listar por usuario
 
     async listarPorUsuario(req, res) {
     try {
@@ -43,7 +34,6 @@ class LikeController {
     }
 }
 
-    // Executa a ação de descurtir
 
     async descurtir(req, res) {
         try {
@@ -62,7 +52,6 @@ class LikeController {
         }
     }
 
-    // Executa a ação de contar
 
     async contar(req, res) {
         try {

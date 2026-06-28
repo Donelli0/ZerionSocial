@@ -1,9 +1,5 @@
-// ================================================
-// LikeRepository.js — src/js/repository/
-// ================================================
 const db = require('../../db/connection');
 
-// Classe que gerencia like repository
 
 class LikeRepository {
 

@@ -1,15 +1,7 @@
-// ================================================
-// ZERION — PostController.js
-// Controller para rotas de post.
-// ================================================
-
 const PostService = require('../service/PostService');
- 
-// Classe que gerencia post controller
  
 class PostController {
  
-    // Executa a ação de criar
  
     async criar(req, res) {
         try {
@@ -21,8 +13,7 @@ class PostController {
             res.status(500).json({ msg: 'Erro ao criar post' });
         }
     }
- 
-    // Executa a ação de deletar
+
  
     async deletar(req, res) {
         try {
@@ -35,8 +26,7 @@ class PostController {
             res.status(500).json({ msg: 'Erro ao excluir post' });
         }
     }
- 
-    // Executa a ação de listar
+
  
     async listar(req, res) {
         try {
@@ -48,8 +38,7 @@ class PostController {
             res.status(500).json({ msg: 'Erro ao buscar posts' });
         }
     }
- 
-    // Executa a ação de listar por usuario
+
  
     async listarPorUsuario(req, res) {
         try {
@@ -62,8 +51,7 @@ class PostController {
             res.status(500).json({ msg: 'Erro ao buscar posts do usuário' });
         }
     }
-    
-    // Executa a ação de listar curtidos
+
     
     async listarCurtidos(req, res) {
         try {
@@ -76,8 +64,7 @@ class PostController {
             res.status(500).json({ msg: 'Erro ao buscar posts curtidos' });
         }
     }
- 
-    // Executa a ação de listar comentados
+
  
     async listarComentados(req, res) {
         try {

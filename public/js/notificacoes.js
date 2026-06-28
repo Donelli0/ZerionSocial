@@ -1,13 +1,4 @@
-// ================================================
-// ZERION — notificacoes.js
-// ================================================
-
 const usuarioLogado = JSON.parse(localStorage.getItem("usuario"));
-
-// ================================================
-// TIMESTAMP RELATIVO
-// ================================================
-// Função para tempo relativo
 
 function tempoRelativo(dataStr) {
     const agora = new Date();
@@ -21,11 +12,6 @@ function tempoRelativo(dataStr) {
     if (diff < 86400 * 30) return `${Math.floor(diff / (86400 * 7))}sem`;
     return data.toLocaleDateString("pt-BR", { day: "2-digit", month: "short" });
 }
-
-// ================================================
-// TEXTO E ÍCONE POR TIPO
-// ================================================
-// Função para info notificacao
 
 function infoNotificacao(tipo, atorUsername) {
     const nome = atorUsername.startsWith("@") ? atorUsername : `@${atorUsername}`;
@@ -63,10 +49,6 @@ function infoNotificacao(tipo, atorUsername) {
     }
 }
 
-// ================================================
-// CARREGAR NOTIFICAÇÕES
-// ================================================
-
 async function carregarNotificacoes() {
     if (!usuarioLogado) return;
 
@@ -77,12 +59,10 @@ async function carregarNotificacoes() {
         const resposta = await fetch(`/notificacoes/${usuarioLogado.id}`);
         const notifs   = await resposta.json();
 
-        // Marca todas como lidas ao abrir a página
         await fetch(`/notificacoes/${usuarioLogado.id}/lidas`, {
             method: "PUT"
         });
 
-        // Zera badge
         atualizarBadge(0);
 
         lista.innerHTML = "";
@@ -113,7 +93,6 @@ async function carregarNotificacoes() {
             item.classList.add("notif-item");
             if (!n.lida) item.classList.add("notif-nova");
 
-            // Clique vai para o perfil do ator ou para o post
             item.style.cursor = "pointer";
             item.addEventListener("click", () => {
                 if (n.tipo === "seguidor") {
@@ -143,7 +122,6 @@ async function carregarNotificacoes() {
         console.error("Erro ao carregar notificações:", erro);
     }
 }
-// Função para tipo texto
 
 function tipoTexto(tipo) {
     switch (tipo) {
@@ -155,13 +133,7 @@ function tipoTexto(tipo) {
     }
 }
 
-// ================================================
-// BADGE DE NÃO LIDAS — atualiza o ícone do sino
-// ================================================
-// Função para atualizar badge
-
 function atualizarBadge(total) {
-    // Feed e outras páginas que têm o ícone de sino
     document.querySelectorAll(".badge-notif").forEach(el => {
         el.textContent = total > 0 ? (total > 9 ? "9+" : total) : "";
         el.style.display = total > 0 ? "flex" : "none";
@@ -178,9 +150,5 @@ async function carregarBadge() {
         console.error("Erro ao carregar badge:", erro);
     }
 }
-
-// ================================================
-// INICIA
-// ================================================
 
 carregarNotificacoes();

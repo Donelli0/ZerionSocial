@@ -1,7 +1,3 @@
-// ================================================
-// SeguidorRepository.js — src/js/repository/
-// ================================================
-
 const db = require('../../db/connection');
 
 class SeguidorRepository {

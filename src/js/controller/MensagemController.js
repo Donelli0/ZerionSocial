@@ -1,13 +1,8 @@
-// ================================================
-// MensagemController.js — src/js/controller/
-// ================================================
 const MensagemServiceInstance = require('../service/MensagemService');
 
-// Classe que gerencia mensagem controller
 
 class MensagemController {
 
-    // Executa a ação de enviar
 
     async enviar(req, res) {
         try {
@@ -20,7 +15,6 @@ class MensagemController {
         }
     }
 
-    // Executa a ação de listar conversas
 
     async listarConversas(req, res) {
         try {
@@ -33,11 +27,10 @@ class MensagemController {
         }
     }
 
-    // Executa a ação de conversa
 
     async conversa(req, res) {
         try {
-            const { id } = req.params;           // id do outro usuário
+            const { id } = req.params;
             const { meu_id } = req.query;
             const mensagens = await MensagemServiceInstance.conversa(meu_id, id);
             res.json(mensagens);

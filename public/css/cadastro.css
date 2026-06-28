@@ -257,5 +257,5 @@ div.campo > a {
 .termos > label >  a {
     color: white;
     text-decoration: underline;
-    white-space: nowrap; /*Tira o Termos          e Condições*/
+    white-space: nowrap;
 }

@@ -1,7 +1,3 @@
-// ================================================
-// ZERION — login.js
-// ================================================
-
 const form = document.getElementById('formLogin');
 
 form.addEventListener('submit', async (e) => {

@@ -1,7 +1,3 @@
-// ================================================
-// ZERION — cadastro.js
-// ================================================
-
 const telefone = document.getElementById('itelefone');
 const usuario  = document.getElementById('iusuario');
 const form     = document.getElementById('formCadastro');
@@ -24,14 +20,12 @@ usuario.addEventListener('input', () => {
     usuario.style.borderColor = '';
     usuario.setCustomValidity('');
 });
-// Função para mostrar erro
 
 function mostrarErro(el, msg) {
     el.style.borderColor = '#ff4d6d';
     el.setCustomValidity(msg);
     el.reportValidity();
 }
-// Função para limpar erro
 
 function limparErro(el) {
     el.style.borderColor = 'green';

@@ -1,7 +1,3 @@
-// ================================================
-// ZERION — UsuarioController.js — FIX email duplicado
-// ================================================
-
 const UsuarioService = require('../service/UsuarioService');
 
 class UsuarioController {
@@ -14,7 +10,6 @@ class UsuarioController {
         } catch (error) {
             console.error(error);
 
-            // FIX — trata email/username duplicado especificamente
             if (error.code === 'ER_DUP_ENTRY') {
                 if (error.sqlMessage?.includes('email')) {
                     return res.status(409).json({ msg: 'Este e-mail já está cadastrado.' });

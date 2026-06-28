@@ -45,7 +45,6 @@ body {
 
 body::-webkit-scrollbar { display: none; }
 
-/* --- Header mobile --- */
 header {
     height: 55px;
     background-color: rgb(6, 2, 20);
@@ -62,7 +61,6 @@ header {
 
 main { width: 100%; }
 
-/* --- Lista de conversas --- */
 #lista-conversas { width: 100%; }
 
 .conversas { list-style: none; display: flex; flex-direction: column; }
@@ -112,7 +110,6 @@ main { width: 100%; }
     text-overflow: ellipsis;
 }
 
-/* --- Tela de chat --- */
 #tela-chat {
     display: none;
     position: fixed;
@@ -255,7 +252,6 @@ main { width: 100%; }
     box-shadow: 0 0 15px rgba(0, 242, 254, 0.4);
 }
 
-/* --- Footer mobile --- */
 footer {
     position: fixed;
     background-color: rgba(6, 2, 20, 0.95);
@@ -293,25 +289,15 @@ nav#navegacao a {
     filter: drop-shadow(0 0 8px rgba(0, 242, 254, 0.6));
 }
 
-/* ================================================
-   TABLET — footer visível
-================================================ */
-
 @media (min-width: 768px) and (max-width: 1023px) {
     body   { padding-bottom: 70px; }
     footer { display: flex; }
     header { display: flex; }
 
-    /* Chat ajusta para não sobrepor footer */
     #tela-chat {
         bottom: 55px;
     }
 }
-
-/* ================================================
-   DESKTOP — esconde header e footer mobile
-   Chat ajusta para ocupar a coluna central
-================================================ */
 
 @media (min-width: 1024px) {
     body   { padding-bottom: 0; }
@@ -324,7 +310,6 @@ nav#navegacao a {
         border-right: 1px solid rgba(255,255,255,0.1);
     }
 
-    /* Chat ocupa apenas a coluna central no desktop */
     #tela-chat {
         position: absolute;
         top: 0;
@@ -333,7 +318,6 @@ nav#navegacao a {
         right: 0;
     }
 
-    /* A coluna main precisa de position relative para o chat absoluto funcionar */
     main {
         position: relative;
     }

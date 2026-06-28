@@ -1,7 +1,3 @@
-// ================================================
-// ZERION — busca.js
-// ================================================
-
 const usuarioLogado   = JSON.parse(localStorage.getItem("usuario"));
 
 const inputBusca      = document.getElementById("input-busca");
@@ -12,9 +8,6 @@ const listaResultados = document.getElementById("lista-resultados");
 const labelResultados = document.getElementById("label-resultados");
 const semResultados   = document.getElementById("sem-resultados");
 
-// ================================================
-// BUSCA EM TEMPO REAL
-// ================================================
 
 inputBusca.addEventListener("input", async () => {
     const termo = inputBusca.value.trim();
@@ -49,10 +42,6 @@ inputBusca.addEventListener("input", async () => {
     }
 });
 
-// ================================================
-// RENDERIZAR USUÁRIO — sem botão seguir, clique vai para perfil
-// ================================================
-// Função para renderizar usuario
 
 function renderizarUsuario(u, container) {
     const nomeExibido = u.username.startsWith("@") ? u.username : `@${u.username}`;
@@ -76,10 +65,6 @@ function renderizarUsuario(u, container) {
     container.appendChild(item);
 }
 
-// ================================================
-// LIMPAR BUSCA
-// ================================================
-// Função para limpar busca
 
 function limparBusca() {
     inputBusca.value              = "";
@@ -89,10 +74,6 @@ function limparBusca() {
 }
 
 btnLimpar.addEventListener("click", limparBusca);
-
-// ================================================
-// SUGESTÕES DO BANCO
-// ================================================
 
 async function carregarSugestoes() {
     try {

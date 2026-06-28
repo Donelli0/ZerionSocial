@@ -1,13 +1,9 @@
-// src/js/repository/NotificacaoRepository.js
-
 const db = require('../../db/connection');
 
-// Classe que gerencia notificacao repository
 
 class NotificacaoRepository {
 
     criar(usuario_id, ator_id, tipo, post_id = null) {
-        // Não cria notificação se o ator é o próprio dono
         if (String(usuario_id) === String(ator_id)) return Promise.resolve();
         const sql = `
             INSERT INTO notificacoes (usuario_id, ator_id, tipo, post_id)
@@ -62,7 +58,6 @@ class NotificacaoRepository {
         return db.promise().query(sql, [usuario_id]);
     }
 
-    // Busca o dono de um post para saber quem notificar
     buscarDonoDoPosto(post_id) {
         const sql = 'SELECT usuario_id FROM posts WHERE id = ?';
         return db.promise().query(sql, [post_id]);

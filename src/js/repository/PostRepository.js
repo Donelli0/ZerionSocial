@@ -1,8 +1,5 @@
-// src/js/repository/PostRepository.js
-
 const db = require('../../db/connection');
 
-// Classe que gerencia post repository
 
 class PostRepository {
 

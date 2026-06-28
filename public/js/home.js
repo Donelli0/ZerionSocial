@@ -1,10 +1,3 @@
-// ================================================
-// ZERION — home.js
-// Lógica interativa do feed
-// ================================================
-
-// Curtir / Descurtir
-// Função para toggle like
 function toggleLike(btn) {
     const card = btn.closest('.post-card');
     const likeCount = card.querySelector('.like-count');
@@ -22,8 +15,6 @@ function toggleLike(btn) {
     }
 }
 
-// Abrir/Fechar seção de comentários
-// Função para toggle comments
 function toggleComments(btn) {
     const card = btn.closest('.post-card');
     const section = card.querySelector('.comments-section');
@@ -38,8 +29,6 @@ function toggleComments(btn) {
     }
 }
 
-// Adicionar comentário
-// Função para adicionar comentario
 function adicionarComentario(btn) {
     const input = btn.previousElementSibling;
     const texto = input.value.trim();
@@ -61,14 +50,11 @@ function adicionarComentario(btn) {
     input.value = '';
 }
 
-// Criar novo post
-// Função para transmitir dados
 function transmitirDados() {
     const txtArea = document.getElementById('post-input');
     const texto = txtArea.value.trim();
 
     if (texto === '') {
-        // Feedback visual no lugar do alert
         txtArea.style.borderColor = 'var(--neon-magenta)';
         setTimeout(() => txtArea.style.borderColor = '', 1500);
         return;

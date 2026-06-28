@@ -1,10 +1,3 @@
-// ================================================
-// ZERION — Usuario.js
-// Modelo de dados para usuario.
-// ================================================
-
-// Classe que gerencia usuario
-
 class Usuario {
     constructor(id, nome, telefone, username, email, genero, senha) {
         this.id = id;

@@ -1,16 +1,9 @@
-// ================================================
-// ZERION — ComentarioController.js
-// Controller para rotas de comentario.
-// ================================================
-
 const ComentarioService  = require('../service/ComentarioService');
 const NotificacaoServiceC = require('../service/NotificacaoService');
 
-// Classe que gerencia comentario controller
 
 class ComentarioController {
 
-    // Executa a ação de comentar
 
     async comentar(req, res) {
         try {
@@ -19,7 +12,6 @@ class ComentarioController {
             await ComentarioService.comentar(post_id, usuario_id, conteudo);
             const total = await ComentarioService.contar(post_id);
 
-            // Notifica o dono do post
             const dono = await NotificacaoServiceC.buscarDonoDoPosto(post_id);
             if (dono) await NotificacaoServiceC.criar(dono, usuario_id, 'comentario', post_id);
 
@@ -30,7 +22,6 @@ class ComentarioController {
         }
     }
 
-    // Executa a ação de listar por usuario
 
     async listarPorUsuario(req, res) {
     try {
@@ -44,7 +35,6 @@ class ComentarioController {
     }
 }
 
-    // Executa a ação de listar
 
     async listar(req, res) {
         try {

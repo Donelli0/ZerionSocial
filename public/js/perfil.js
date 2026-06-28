@@ -1,7 +1,3 @@
-// ================================================
-// ZERION — perfil.js
-// ================================================
-
 const usuarioLogado = JSON.parse(localStorage.getItem("usuario"));
 const params        = new URLSearchParams(window.location.search);
 const perfilId      = params.get("id") || usuarioLogado?.id;
@@ -17,10 +13,6 @@ const listaPosts  = document.getElementById("lista-posts");
 let _perfilCardIndex = 0;
 let abaAtiva = "posts";
 
-// ================================================
-// TIMESTAMP RELATIVO
-// ================================================
-
 function tempoRelativo(dataStr) {
     const agora = new Date();
     const data  = new Date(dataStr);
@@ -34,10 +26,6 @@ function tempoRelativo(dataStr) {
     return data.toLocaleDateString("pt-BR", { day: "2-digit", month: "short" });
 }
 
-// ================================================
-// BADGE VERIFICADO
-// ================================================
-
 function badgeVerificado(verificado) {
     if (!verificado) return "";
     return `<i class="fa-solid fa-circle-check badge-verificado" title="Verificado"></i>`;
@@ -50,19 +38,11 @@ function setContador(id, numero) {
     if (span) span.textContent = numero;
 }
 
-// ================================================
-// BOTÃO VOLTAR
-// ================================================
-
 const btnVoltar = document.getElementById("btn-voltar-perfil");
 if (btnVoltar) {
     btnVoltar.style.display = "flex";
     btnVoltar.addEventListener("click", () => history.back());
 }
-
-// ================================================
-// CARREGAR PERFIL
-// ================================================
 
 async function carregarPerfil() {
     try {
@@ -103,7 +83,6 @@ async function carregarPerfil() {
         const sidebarContagem = document.getElementById("sidebar-contagem");
         if (sidebarContagem) sidebarContagem.textContent = `${contagem.seguidores} seguidores · ${contagem.seguindo} seguindo`;
 
-        // FIX #1 — clique em seguidores/seguindo abre modal
         document.getElementById("contagem-seguidores")?.addEventListener("click", () => abrirModalSeguidores("seguidores"));
         document.getElementById("contagem-seguindo")?.addEventListener("click",   () => abrirModalSeguidores("seguindo"));
 
@@ -112,7 +91,6 @@ async function carregarPerfil() {
             btnMensagem.style.display   = "none";
             btnFoto.style.cursor        = "pointer";
         } else {
-            // FIX — esconde botão mensagem para IAs
             if (usuario.is_ia) {
                 btnMensagem.style.display = "none";
             } else {
@@ -138,10 +116,6 @@ async function carregarPerfil() {
         console.error("Erro ao carregar perfil:", erro);
     }
 }
-
-// ================================================
-// FIX #1 — MODAL DE SEGUIDORES / SEGUINDO
-// ================================================
 
 async function abrirModalSeguidores(tipo) {
     document.getElementById("modal-seguidores")?.remove();
@@ -208,10 +182,6 @@ async function abrirModalSeguidores(tipo) {
     }
 }
 
-// ================================================
-// TABS
-// ================================================
-
 document.querySelectorAll(".tab-btn").forEach(btn => {
     btn.addEventListener("click", () => {
         document.querySelectorAll(".tab-btn").forEach(b => b.classList.remove("ativa"));
@@ -235,10 +205,6 @@ async function carregarAba(tab) {
     if (tab === "comentarios") await carregarComentados();
     if (tab === "likes")       await carregarLikes();
 }
-
-// ================================================
-// ABA POSTS
-// ================================================
 
 async function carregarPosts() {
     try {
@@ -266,10 +232,6 @@ async function carregarPosts() {
     }
 }
 
-// ================================================
-// ABA LIKES
-// ================================================
-
 async function carregarLikes() {
     try {
         const viewerId = usuarioLogado?.id || 0;
@@ -294,10 +256,6 @@ async function carregarLikes() {
         mostrarErroAba();
     }
 }
-
-// ================================================
-// ABA COMENTÁRIOS
-// ================================================
 
 async function carregarComentados() {
     try {
@@ -331,10 +289,6 @@ function mostrarErroAba() {
             <p>Erro ao carregar. Tente novamente.</p>
         </li>`;
 }
-
-// ================================================
-// RENDERIZAR POST
-// ================================================
 
 function renderizarPost(post, origem) {
     const cardId = `perfil-card-${++_perfilCardIndex}`;
@@ -454,7 +408,6 @@ function renderizarPost(post, origem) {
         btnRepostEl.querySelector(".contagem-reposts-txt").style.setProperty("color", "var(--neon-ciano)", "important");
     }
 
-    // FIX — clique no avatar/nome vai para perfil
     item.querySelectorAll(".link-perfil").forEach(el => {
         el.style.cursor = "pointer";
         el.addEventListener("click", () => {
@@ -490,10 +443,6 @@ function renderizarPost(post, origem) {
     });
 }
 
-// ================================================
-// DELETAR POST
-// ================================================
-
 async function deletarPost(post_id, itemEl) {
     if (!confirm("Excluir esta transmissão?")) return;
 
@@ -518,10 +467,6 @@ async function deletarPost(post_id, itemEl) {
         }
     } catch (erro) { console.error("Erro ao deletar:", erro); }
 }
-
-// ================================================
-// CURTIR
-// ================================================
 
 async function toggleLike(e) {
     if (!usuarioLogado) return;
@@ -560,10 +505,6 @@ async function toggleLike(e) {
         }
     } catch (erro) { console.error(erro); }
 }
-
-// ================================================
-// COMENTÁRIOS — FIX link no comentarista
-// ================================================
 
 async function toggleComentarios(e) {
     const btn      = e.currentTarget;
@@ -619,7 +560,6 @@ async function carregarComentariosCard(post_id, secao) {
                 </div>
             `;
 
-            // FIX — clique no nome/avatar do comentarista vai para perfil
             item.querySelectorAll(".link-perfil").forEach(el => {
                 el.addEventListener("click", () => {
                     window.location.href = `perfil.html?id=${el.dataset.uid}`;
@@ -669,10 +609,6 @@ async function enviarComentario(post_id, input, postCard) {
     } catch (erro) { console.error(erro); }
 }
 
-// ================================================
-// REPOST
-// ================================================
-
 async function toggleRepost(e) {
     if (!usuarioLogado) return;
     const btn        = e.currentTarget;
@@ -704,10 +640,6 @@ async function toggleRepost(e) {
         }
     } catch (erro) { console.error(erro); }
 }
-
-// ================================================
-// SEGUIR / MENSAGEM / FOTO
-// ================================================
 
 btnSeguir.addEventListener("click", async () => {
     if (!usuarioLogado) return;

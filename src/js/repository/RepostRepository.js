@@ -1,9 +1,5 @@
-// ================================================
-// RepostRepository.js — src/js/repository/
-// ================================================
 const db = require('../../db/connection');
 
-// Classe que gerencia repost repository
 
 class RepostRepository {
 
@@ -27,7 +23,6 @@ class RepostRepository {
         return db.promise().query(sql, [post_id]);
     }
 
-    // Busca os reposts de um usuário para montar o feed
     buscarPorUsuario(usuario_id) {
         const sql = `
             SELECT

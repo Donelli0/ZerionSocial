@@ -1,7 +1,3 @@
-// ================================================
-// ZERION — mensagens.js
-// ================================================
-
 const usuarioLogado = JSON.parse(localStorage.getItem("usuario"));
 let destinatarioAtivo    = null;
 let intervaloAtualizacao = null;
@@ -37,13 +33,9 @@ document.addEventListener("DOMContentLoaded", () => {
         abrirChatPorId(idDireto);
     } else {
         carregarConversas();
-        iniciarAtualizacaoLista(); // polling da lista de conversas
+        iniciarAtualizacaoLista();
     }
 });
-
-// ================================================
-// ABRIR CHAT DIRETO POR ID
-// ================================================
 
 async function abrirChatPorId(id) {
     try {
@@ -58,10 +50,6 @@ async function abrirChatPorId(id) {
         carregarConversas();
     }
 }
-
-// ================================================
-// CARREGAR CONVERSAS
-// ================================================
 
 async function carregarConversas() {
     if (!usuarioLogado) return;
@@ -101,11 +89,6 @@ async function carregarConversas() {
     }
 }
 
-// ================================================
-// POLLING DA LISTA — atualiza conversas a cada 5s
-// Só roda quando a lista está visível (fora do chat)
-// ================================================
-
 function iniciarAtualizacaoLista() {
     pararAtualizacaoLista();
     intervaloLista = setInterval(() => {
@@ -120,12 +103,8 @@ function pararAtualizacaoLista() {
     }
 }
 
-// ================================================
-// ABRIR CHAT
-// ================================================
-
 async function abrirChat(id, username, fotoPerfil) {
-    pararAtualizacaoLista(); // para o polling da lista ao entrar no chat
+    pararAtualizacaoLista();
     pararAtualizacaoChat();
 
     destinatarioAtivo = id;
@@ -153,10 +132,6 @@ async function abrirChat(id, username, fotoPerfil) {
     elInputMensagem.focus();
 }
 
-// ================================================
-// CARREGAR MENSAGENS — carrega tudo ao abrir o chat
-// ================================================
-
 async function carregarMensagens(limpar = false) {
     if (!destinatarioAtivo || !usuarioLogado) return;
 
@@ -178,10 +153,6 @@ async function carregarMensagens(limpar = false) {
         console.error("Erro ao carregar mensagens:", erro);
     }
 }
-
-// ================================================
-// POLLING DO CHAT — verifica novas mensagens a cada 2s
-// ================================================
 
 function iniciarAtualizacaoChat() {
     pararAtualizacaoChat();
@@ -205,7 +176,6 @@ function iniciarAtualizacaoChat() {
             if (temNova) carregarConversas();
 
         } catch (erro) {
-            // falha silenciosa
         }
     }, 2000);
 }
@@ -216,10 +186,6 @@ function pararAtualizacaoChat() {
         intervaloAtualizacao = null;
     }
 }
-
-// ================================================
-// ENVIAR MENSAGEM
-// ================================================
 
 async function enviarMensagem() {
     const texto = elInputMensagem.value.trim();
@@ -253,10 +219,6 @@ async function enviarMensagem() {
     }
 }
 
-// ================================================
-// RENDERIZAR MENSAGEM
-// ================================================
-
 function adicionarMensagemNaTela(texto, tipo) {
     const item = document.createElement("li");
     item.classList.add("msg-item", tipo === "enviada" ? "msg-enviada" : "msg-recebida");
@@ -265,9 +227,6 @@ function adicionarMensagemNaTela(texto, tipo) {
     elChatMensagens.scrollTop = elChatMensagens.scrollHeight;
 }
 
-// ================================================
-// VOLTAR
-// ================================================
 
 function voltarLista() {
     pararAtualizacaoChat();
@@ -283,12 +242,8 @@ function voltarLista() {
     elListaConversas.style.display = "block";
     history.replaceState(null, "", "mensagens.html");
     carregarConversas();
-    iniciarAtualizacaoLista(); // reinicia polling da lista ao voltar
+    iniciarAtualizacaoLista();
 }
-
-// ================================================
-// FORMATAR TEMPO
-// ================================================
 
 function formatarTempo(data) {
     const diff = Math.floor((new Date() - new Date(data)) / 60000);

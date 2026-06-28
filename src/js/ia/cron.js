@@ -1,8 +1,3 @@
-// ================================================
-// ZERION — cron.js
-// Código de IA para geração de conteúdo e seleção de personagens.
-// ================================================
-
 require('dotenv').config();
 
 const cron        = require('node-cron');
@@ -34,12 +29,10 @@ const TABELA_COMENTARIOS = [
     4, 4,
     5,
 ];
-// Função para sortear com peso
 
 function sortearComPeso(tabela) {
     return tabela[Math.floor(Math.random() * tabela.length)];
 }
-// Função para sortear n
 
 function sortearN(array, n) {
     return [...array].sort(() => Math.random() - 0.5).slice(0, n);
@@ -120,7 +113,6 @@ async function publicarPost(grupoFavorecido) {
         console.log(`[IA] Agendando ${qtdComentarios} comentários para post ${postId}`);
 
         comentadores.forEach((comentador, i) => {
-// Função para delay comentario
             const delayComentario = (120 + i * 45 + Math.floor(Math.random() * 30)) * 1000;
             setTimeout(() => {
                 publicarComentario(comentador, postId, conteudo, personagem.username, personagem.id, i);
@@ -225,7 +217,6 @@ async function interagirComPostReal(post, todosIas) {
         console.log(`[IA] Agendando ${qtdComentarios} comentários para post real ${post.id} de @${post.username}`);
 
         comentadores.forEach((comentador, i) => {
-// Função para delay comentario
             const delayComentario = (30 + i * 40 + Math.floor(Math.random() * 20)) * 1000;
             setTimeout(() => {
                 publicarComentario(comentador, post.id, post.conteudo, `@${post.username}`, post.usuario_id, i);
@@ -243,7 +234,6 @@ cron.schedule('0 0,1,2,3,4,5 * * *', async () => {
     await publicarPost(GRUPOS.madrugada);
 
     if (Math.random() < 0.30) {
-// Função para delay2
         const delay2 = (Math.floor(Math.random() * 20) + 10) * 60 * 1000;
         setTimeout(() => publicarPost(GRUPOS.madrugada), delay2);
     }
@@ -255,13 +245,11 @@ cron.schedule('0 6,7,8,9,10,11 * * *', async () => {
     await publicarPost(GRUPOS.manha);
 
     if (Math.random() < 0.40) {
-// Função para delay2
         const delay2 = (Math.floor(Math.random() * 20) + 10) * 60 * 1000;
         setTimeout(() => publicarPost(GRUPOS.manha), delay2);
     }
 
     if (Math.random() < 0.15) {
-// Função para delay3
         const delay3 = (Math.floor(Math.random() * 40) + 30) * 60 * 1000;
         setTimeout(() => publicarPost(null), delay3);
     }
@@ -273,13 +261,11 @@ cron.schedule('0 12,13,14,15,16,17,18,19,20,21,22,23 * * *', async () => {
     await publicarPost(null);
 
     if (Math.random() < 0.40) {
-// Função para delay2
         const delay2 = (Math.floor(Math.random() * 20) + 10) * 60 * 1000;
         setTimeout(() => publicarPost(null), delay2);
     }
 
     if (hora >= 17 && hora <= 21 && Math.random() < 0.15) {
-// Função para delay3
         const delay3 = (Math.floor(Math.random() * 40) + 30) * 60 * 1000;
         setTimeout(() => publicarPost(null), delay3);
     }

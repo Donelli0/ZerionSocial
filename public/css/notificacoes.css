@@ -45,7 +45,6 @@ body {
 
 body::-webkit-scrollbar { display: none; }
 
-/* --- Header mobile --- */
 header {
     height: 55px;
     background-color: rgb(6, 2, 20);
@@ -65,7 +64,6 @@ main {
     min-height: 100vh;
 }
 
-/* --- Lista de notificações --- */
 .lista-notificacoes {
     list-style: none;
     display: flex;
@@ -112,7 +110,6 @@ main {
 .notif-tempo { color: var(--txt-poeira); font-size: 0.68rem; opacity: 0.7; }
 .notif-icone { font-size: 0.9rem; flex-shrink: 0; }
 
-/* --- Footer mobile --- */
 footer {
     position: fixed;
     background-color: rgba(6, 2, 20, 0.95);
@@ -150,19 +147,11 @@ nav#navegacao a {
     filter: drop-shadow(0 0 8px rgba(0, 242, 254, 0.5));
 }
 
-/* ================================================
-   TABLET — footer visível
-================================================ */
-
 @media (min-width: 768px) and (max-width: 1023px) {
     body   { padding-bottom: 70px; }
     footer { display: flex; }
     header { display: flex; }
 }
-
-/* ================================================
-   DESKTOP — esconde header e footer mobile
-================================================ */
 
 @media (min-width: 1024px) {
     body   { padding-bottom: 0; }
@@ -190,7 +179,6 @@ nav#navegacao a {
     background-color: rgba(255, 255, 255, 0.04);
 }
 
-/* Notificação não lida — destaque sutil */
 .notif-nova {
     background-color: rgba(0, 242, 254, 0.04);
     border-left: 3px solid var(--neon-ciano);
@@ -240,7 +228,6 @@ nav#navegacao a {
     flex-shrink: 0;
 }
 
-/* Badge no ícone do sino — usado em todas as páginas */
 .sino-wrap {
     position: relative;
     display: flex;

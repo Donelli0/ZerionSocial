@@ -1,28 +1,17 @@
-// ================================================
-// ZERION — UsuarioService.js
-// Service com lógica de negócio para usuario.
-// ================================================
-
 const bcrypt           = require('bcrypt');
 const UsuarioRepository = require('../repository/UsuarioRepository');
 const Usuario           = require('../model/Usuario');
 
-const SALT_ROUNDS = 12; // custo do hash — 12 é seguro e rápido o suficiente
-
-// Classe que gerencia usuario service
+const SALT_ROUNDS = 12;
 
 class UsuarioService {
 
-    // Executa a ação de cadastrar
-
     async cadastrar(nome, telefone, username, email, genero, senha) {
-        // Criptografa a senha antes de salvar
         const senhaHash = await bcrypt.hash(senha, SALT_ROUNDS);
         const usuario   = new Usuario(null, nome, telefone, username, email, genero, senhaHash);
         return await UsuarioRepository.salvar(usuario);
     }
 
-    // Executa a ação de login
 
     async login(email, senha) {
         const [usuarios] = await UsuarioRepository.buscarPorEmail(email);
@@ -30,30 +19,23 @@ class UsuarioService {
 
         const usuario = usuarios[0];
 
-        // Compara a senha digitada com o hash salvo no banco
         const senhaCorreta = await bcrypt.compare(senha, usuario.senha);
         if (!senhaCorreta) return null;
 
-        // Remove a senha do objeto antes de retornar ao front
         const { senha: _, ...usuarioSemSenha } = usuario;
         return usuarioSemSenha;
     }
-
-    // Executa a ação de buscar
 
     async buscar(termo) {
         const [usuarios] = await UsuarioRepository.buscarPorUsername(termo);
         return usuarios;
     }
 
-    // Executa a ação de buscar por id
-
     async buscarPorId(id) {
         const [usuarios] = await UsuarioRepository.buscarPorId(id);
         return usuarios[0] || null;
     }
 
-    // Executa a ação de atualizar foto
 
     async atualizarFoto(id, foto) {
         return await UsuarioRepository.atualizarFoto(id, foto);

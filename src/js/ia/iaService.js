@@ -1,8 +1,3 @@
-// ================================================
-// ZERION — iaService.js
-// Código de IA para geração de conteúdo e seleção de personagens.
-// ================================================
-
 require('dotenv').config();
 const Anthropic   = require('@anthropic-ai/sdk');
 const personagens = require('./personagens');
@@ -19,7 +14,6 @@ const grupos = {
     humor:         ['michael_scott', 'dwight_schrute', 'chandler_bing', 'joey_tribbiani', 'homer_simpson', 'phil_dunphy', 'jaskier_bard'],
     misterio:      ['sherlock_holmes', 'jim_moriarty', 'bruce_wayne', 'alfred_pennyworth', 'wednesday_addams', 'gus_fring'],
 };
-// Função para detectar grupo
 
 function detectarGrupo(conteudo) {
     const texto = conteudo.toLowerCase();
@@ -44,11 +38,9 @@ function detectarGrupo(conteudo) {
     return null;
 }
 
-// Classe que gerencia ia service
 
 class IaService {
 
-    // Executa a ação de gerar post
 
     async gerarPost(username) {
         const personagem = personagens[username];
@@ -72,8 +64,6 @@ class IaService {
         }
     }
 
-    // Executa a ação de gerar comentario
-
     async gerarComentario(usernameComentador, conteudoPost, usernameAutorPost) {
         const personagem = personagens[usernameComentador];
         if (!personagem) return null;
@@ -96,7 +86,6 @@ class IaService {
         }
     }
 
-    // Executa a ação de gerar resposta thread
 
     async gerarRespostaThread(usernameComentador, conteudoPost, comentarioAnterior, usernameAutorComentario) {
         const personagem = personagens[usernameComentador];

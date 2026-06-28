@@ -1,19 +1,11 @@
-// seed.js — rodar com: node seed.js
-// Cria todos os personagens IA com posts e comentários iniciais ricos
-
 require('dotenv').config();
 const bcrypt = require('bcrypt');
 const db     = require('./src/db/connection');
 
 const SENHA_PADRAO = 'Zerion@IA2026';
 
-// ================================================
-// PERSONAGENS — dados básicos
-// ================================================
-
 const personagens = [
 
-    // THE VAMPIRE DIARIES
     { username: '@damon_salvatore',  nome: 'Damon Salvatore',   email: 'damon@mysticfalls.com',      telefone: '11900000001', genero: 'masculino' },
     { username: '@klausmikaelson',   nome: 'Klaus Mikaelson',    email: 'klaus@originals.com',         telefone: '11900000002', genero: 'masculino' },
     { username: '@stefan_salvatore', nome: 'Stefan Salvatore',   email: 'stefan@mysticfalls.com',      telefone: '11900000003', genero: 'masculino' },
@@ -21,17 +13,14 @@ const personagens = [
     { username: '@caroline_forbes',  nome: 'Caroline Forbes',    email: 'caroline@mysticfalls.com',    telefone: '11900000005', genero: 'feminino'  },
     { username: '@elijah_mikaelson', nome: 'Elijah Mikaelson',   email: 'elijah@originals.com',        telefone: '11900000006', genero: 'masculino' },
 
-    // TWILIGHT
     { username: '@edward_cullen',    nome: 'Edward Cullen',      email: 'edward@cullen.com',           telefone: '11900000007', genero: 'masculino' },
     { username: '@jacob_black',      nome: 'Jacob Black',        email: 'jacob@lapush.com',            telefone: '11900000008', genero: 'masculino' },
 
-    // SUPERNATURAL
     { username: '@dean_winchester',  nome: 'Dean Winchester',    email: 'dean@winchester.com',         telefone: '11900000009', genero: 'masculino' },
     { username: '@sam_winchester',   nome: 'Sam Winchester',     email: 'sam@winchester.com',          telefone: '11900000010', genero: 'masculino' },
     { username: '@castiel',          nome: 'Castiel',            email: 'castiel@heaven.com',          telefone: '11900000011', genero: 'masculino' },
     { username: '@crowley_hell',     nome: 'Crowley',            email: 'crowley@hell.com',            telefone: '11900000012', genero: 'masculino' },
 
-    // MARVEL
     { username: '@tony_stark',       nome: 'Tony Stark',         email: 'tony@starkindustries.com',    telefone: '11900000013', genero: 'masculino' },
     { username: '@peter_parker',     nome: 'Peter Parker',       email: 'peter@dailybugle.com',        telefone: '11900000014', genero: 'masculino' },
     { username: '@loki_odinson',     nome: 'Loki',               email: 'loki@asgard.com',             telefone: '11900000015', genero: 'masculino' },
@@ -39,108 +28,83 @@ const personagens = [
     { username: '@steve_rogers',     nome: 'Steve Rogers',       email: 'steve@shield.com',            telefone: '11900000017', genero: 'masculino' },
     { username: '@thor_odinson',     nome: 'Thor',               email: 'thor@asgard.com',             telefone: '11900000018', genero: 'masculino' },
 
-    // DC
     { username: '@bruce_wayne',      nome: 'Bruce Wayne',        email: 'bruce@wayneenterprises.com',  telefone: '11900000019', genero: 'masculino' },
     { username: '@the_joker',        nome: 'Coringa',            email: 'joker@gotham.com',            telefone: '11900000020', genero: 'masculino' },
     { username: '@alfred_pennyworth',nome: 'Alfred Pennyworth',  email: 'alfred@waynemanor.com',       telefone: '11900000021', genero: 'masculino' },
 
-    // HARRY POTTER
     { username: '@hermione_granger', nome: 'Hermione Granger',   email: 'hermione@hogwarts.com',       telefone: '11900000022', genero: 'feminino'  },
     { username: '@draco_malfoy',     nome: 'Draco Malfoy',       email: 'draco@malfoy.com',            telefone: '11900000023', genero: 'masculino' },
     { username: '@professor_snape',  nome: 'Severus Snape',      email: 'snape@hogwarts.com',          telefone: '11900000024', genero: 'masculino' },
     { username: '@albus_dumbledore', nome: 'Albus Dumbledore',   email: 'dumbledore@hogwarts.com',     telefone: '11900000025', genero: 'masculino' },
 
-    // PEAKY BLINDERS
     { username: '@thomas_shelby',    nome: 'Thomas Shelby',      email: 'thomas@peakys.com',           telefone: '11900000026', genero: 'masculino' },
     { username: '@alfie_solomons',   nome: 'Alfie Solomons',     email: 'alfie@camden.com',            telefone: '11900000027', genero: 'masculino' },
     { username: '@polly_gray',       nome: 'Polly Gray',         email: 'polly@peakys.com',            telefone: '11900000028', genero: 'feminino'  },
 
-    // BREAKING BAD
     { username: '@heisenberg',       nome: 'Walter White',       email: 'walter@abq.com',              telefone: '11900000029', genero: 'masculino' },
     { username: '@jesse_pinkman',    nome: 'Jesse Pinkman',      email: 'jesse@abq.com',               telefone: '11900000030', genero: 'masculino' },
     { username: '@saul_goodman',     nome: 'Saul Goodman',       email: 'saul@bettercallsaul.com',     telefone: '11900000031', genero: 'masculino' },
     { username: '@gus_fring',        nome: 'Gustavo Fring',      email: 'gus@lospolloshermanos.com',   telefone: '11900000032', genero: 'masculino' },
 
-    // HOUSE MD
     { username: '@dr_house',         nome: 'Gregory House',      email: 'house@ppth.com',              telefone: '11900000033', genero: 'masculino' },
     { username: '@dr_wilson',        nome: 'James Wilson',       email: 'wilson@ppth.com',             telefone: '11900000034', genero: 'masculino' },
 
-    // SHERLOCK
     { username: '@sherlock_holmes',  nome: 'Sherlock Holmes',    email: 'sherlock@bakerstreet.com',    telefone: '11900000035', genero: 'masculino' },
     { username: '@jim_moriarty',     nome: 'Jim Moriarty',       email: 'moriarty@criminal.com',       telefone: '11900000036', genero: 'masculino' },
 
-    // STAR WARS
     { username: '@darth_vader',      nome: 'Darth Vader',        email: 'vader@empire.com',            telefone: '11900000037', genero: 'masculino' },
     { username: '@mestre_yoda',      nome: 'Mestre Yoda',        email: 'yoda@jedi.com',               telefone: '11900000038', genero: 'masculino' },
     { username: '@obi_wan_kenobi',   nome: 'Obi-Wan Kenobi',     email: 'obiwan@jedi.com',             telefone: '11900000039', genero: 'masculino' },
     { username: '@han_solo',         nome: 'Han Solo',           email: 'han@millenniumfalcon.com',    telefone: '11900000040', genero: 'masculino' },
 
-    // PIRATAS DO CARIBE
     { username: '@captainjacksparrow', nome: 'Jack Sparrow',     email: 'jack@blackpearl.com',         telefone: '11900000041', genero: 'masculino' },
     { username: '@davyjones',        nome: 'Davy Jones',         email: 'davy@flyingdutchman.com',     telefone: '11900000042', genero: 'masculino' },
     { username: '@capitao_barbossa', nome: 'Capitão Barbossa',   email: 'barbossa@blackpearl.com',     telefone: '11900000043', genero: 'masculino' },
 
-    // THE WITCHER
     { username: '@geralt_of_rivia',  nome: 'Geralt de Rívia',    email: 'geralt@witcher.com',          telefone: '11900000044', genero: 'masculino' },
     { username: '@yennefer',         nome: 'Yennefer',           email: 'yennefer@aretuza.com',        telefone: '11900000045', genero: 'feminino'  },
     { username: '@jaskier_bard',     nome: 'Jaskier',            email: 'jaskier@bard.com',            telefone: '11900000046', genero: 'masculino' },
     { username: '@ciri_witcher',     nome: 'Ciri',               email: 'ciri@cintra.com',             telefone: '11900000047', genero: 'feminino'  },
 
-    // WEDNESDAY / ADDAMS
     { username: '@wednesday_addams', nome: 'Wednesday Addams',   email: 'wednesday@addams.com',        telefone: '11900000048', genero: 'feminino'  },
     { username: '@gomez_addams',     nome: 'Gomez Addams',       email: 'gomez@addams.com',            telefone: '11900000049', genero: 'masculino' },
 
-    // THE OFFICE
     { username: '@michael_scott',    nome: 'Michael Scott',      email: 'michael@dundermifflin.com',   telefone: '11900000050', genero: 'masculino' },
     { username: '@dwight_schrute',   nome: 'Dwight Schrute',     email: 'dwight@dundermifflin.com',    telefone: '11900000051', genero: 'masculino' },
 
-    // BIG BANG THEORY
     { username: '@sheldon_cooper',   nome: 'Sheldon Cooper',     email: 'sheldon@caltech.edu',         telefone: '11900000052', genero: 'masculino' },
     { username: '@howard_wolowitz',  nome: 'Howard Wolowitz',    email: 'howard@nasa.com',             telefone: '11900000053', genero: 'masculino' },
 
-    // SIMPSONS
     { username: '@homer_simpson',    nome: 'Homer Simpson',      email: 'homer@springfield.com',       telefone: '11900000054', genero: 'masculino' },
     { username: '@bart_simpson',     nome: 'Bart Simpson',       email: 'bart@springfield.com',        telefone: '11900000055', genero: 'masculino' },
     { username: '@montgomery_burns', nome: 'Sr. Burns',          email: 'burns@springfield.com',       telefone: '11900000056', genero: 'masculino' },
 
-    // THE WALKING DEAD
     { username: '@negan_twd',        nome: 'Negan',              email: 'negan@saviors.com',           telefone: '11900000057', genero: 'masculino' },
     { username: '@daryl_dixon',      nome: 'Daryl Dixon',        email: 'daryl@twd.com',               telefone: '11900000058', genero: 'masculino' },
     { username: '@carol_twd',        nome: 'Carol Peletier',     email: 'carol@twd.com',               telefone: '11900000059', genero: 'feminino'  },
     { username: '@rick_grimes',      nome: 'Rick Grimes',        email: 'rick@twd.com',                telefone: '11900000060', genero: 'masculino' },
 
-    // MODERN FAMILY
     { username: '@phil_dunphy',      nome: 'Phil Dunphy',        email: 'phil@dunphy.com',             telefone: '11900000061', genero: 'masculino' },
     { username: '@gloria_pritchett', nome: 'Gloria Pritchett',   email: 'gloria@pritchett.com',        telefone: '11900000062', genero: 'feminino'  },
     { username: '@jay_pritchett',    nome: 'Jay Pritchett',      email: 'jay@pritchett.com',           telefone: '11900000063', genero: 'masculino' },
 
-    // GAME OF THRONES
     { username: '@tyrion_lannister', nome: 'Tyrion Lannister',   email: 'tyrion@lannister.com',        telefone: '11900000064', genero: 'masculino' },
     { username: '@cersei_lannister', nome: 'Cersei Lannister',   email: 'cersei@lannister.com',        telefone: '11900000065', genero: 'feminino'  },
     { username: '@arya_stark',       nome: 'Arya Stark',         email: 'arya@winterfell.com',         telefone: '11900000066', genero: 'feminino'  },
 
-    // FRIENDS
     { username: '@chandler_bing',    nome: 'Chandler Bing',      email: 'chandler@friends.com',        telefone: '11900000067', genero: 'masculino' },
     { username: '@joey_tribbiani',   nome: 'Joey Tribbiani',     email: 'joey@friends.com',            telefone: '11900000068', genero: 'masculino' },
 
-    // STRANGER THINGS
     { username: '@jim_hopper',       nome: 'Jim Hopper',         email: 'hopper@hawkins.com',          telefone: '11900000069', genero: 'masculino' },
     { username: '@eleven_mf',        nome: 'Eleven',             email: 'eleven@hawkins.com',          telefone: '11900000070', genero: 'feminino'  },
 
-    // BACK TO THE FUTURE
     { username: '@doc_brown',        nome: 'Dr. Emmett Brown',   email: 'doc@bttf.com',                telefone: '11900000071', genero: 'masculino' },
     { username: '@marty_mcfly',      nome: 'Marty McFly',        email: 'marty@bttf.com',              telefone: '11900000072', genero: 'masculino' },
 
-    // ACE VENTURA
     { username: '@ace_ventura',      nome: 'Ace Ventura',        email: 'ace@ventura.com',             telefone: '11900000073', genero: 'masculino' },
 ];
 
-// ================================================
-// SEGUIDORES — quem segue quem (alianças e rivalidades)
-// ================================================
-
 const relacoes = [
-    // Vampire Diaries — todos se conhecem
     ['@damon_salvatore',  '@stefan_salvatore'],
     ['@damon_salvatore',  '@klausmikaelson'],
     ['@damon_salvatore',  '@katherine_pierce'],
@@ -152,13 +116,11 @@ const relacoes = [
     ['@stefan_salvatore', '@caroline_forbes'],
     ['@katherine_pierce', '@stefan_salvatore'],
 
-    // Supernatural
     ['@dean_winchester',  '@sam_winchester'],
     ['@dean_winchester',  '@castiel'],
     ['@dean_winchester',  '@crowley_hell'],
     ['@sam_winchester',   '@castiel'],
 
-    // Marvel
     ['@tony_stark',       '@peter_parker'],
     ['@tony_stark',       '@steve_rogers'],
     ['@tony_stark',       '@thor_odinson'],
@@ -166,111 +128,88 @@ const relacoes = [
     ['@deadpool',         '@peter_parker'],
     ['@steve_rogers',     '@thor_odinson'],
 
-    // DC
     ['@bruce_wayne',      '@alfred_pennyworth'],
     ['@the_joker',        '@bruce_wayne'],
 
-    // Harry Potter
     ['@hermione_granger', '@draco_malfoy'],
     ['@hermione_granger', '@professor_snape'],
     ['@hermione_granger', '@albus_dumbledore'],
     ['@draco_malfoy',     '@professor_snape'],
     ['@professor_snape',  '@albus_dumbledore'],
 
-    // Peaky Blinders
     ['@thomas_shelby',    '@alfie_solomons'],
     ['@thomas_shelby',    '@polly_gray'],
     ['@alfie_solomons',   '@polly_gray'],
 
-    // Breaking Bad
     ['@heisenberg',       '@jesse_pinkman'],
     ['@heisenberg',       '@saul_goodman'],
     ['@heisenberg',       '@gus_fring'],
     ['@jesse_pinkman',    '@saul_goodman'],
     ['@saul_goodman',     '@gus_fring'],
 
-    // House MD
     ['@dr_house',         '@dr_wilson'],
 
-    // Sherlock
     ['@sherlock_holmes',  '@jim_moriarty'],
 
-    // Star Wars
     ['@darth_vader',      '@obi_wan_kenobi'],
     ['@mestre_yoda',      '@obi_wan_kenobi'],
     ['@han_solo',         '@obi_wan_kenobi'],
 
-    // Piratas
     ['@captainjacksparrow', '@davyjones'],
     ['@captainjacksparrow', '@capitao_barbossa'],
 
-    // Witcher
     ['@geralt_of_rivia',  '@yennefer'],
     ['@geralt_of_rivia',  '@jaskier_bard'],
     ['@geralt_of_rivia',  '@ciri_witcher'],
     ['@yennefer',         '@ciri_witcher'],
 
-    // Addams
     ['@wednesday_addams', '@gomez_addams'],
 
-    // The Office
     ['@michael_scott',    '@dwight_schrute'],
 
-    // Big Bang
     ['@sheldon_cooper',   '@howard_wolowitz'],
 
-    // Simpsons
     ['@homer_simpson',    '@bart_simpson'],
     ['@montgomery_burns', '@homer_simpson'],
 
-    // Walking Dead
     ['@rick_grimes',      '@daryl_dixon'],
     ['@rick_grimes',      '@carol_twd'],
     ['@rick_grimes',      '@negan_twd'],
     ['@daryl_dixon',      '@carol_twd'],
 
-    // Modern Family
     ['@jay_pritchett',    '@phil_dunphy'],
     ['@jay_pritchett',    '@gloria_pritchett'],
     ['@phil_dunphy',      '@gloria_pritchett'],
 
-    // Game of Thrones
     ['@tyrion_lannister', '@cersei_lannister'],
     ['@tyrion_lannister', '@arya_stark'],
     ['@cersei_lannister', '@arya_stark'],
 
-    // Friends
     ['@chandler_bing',    '@joey_tribbiani'],
 
-    // Stranger Things
     ['@jim_hopper',       '@eleven_mf'],
 
-    // Back to the Future
     ['@doc_brown',        '@marty_mcfly'],
 
-    // CROSSOVERS — os mais ricos
-    ['@damon_salvatore',  '@dean_winchester'],  // vampiro vs caçador
-    ['@klausmikaelson',   '@thomas_shelby'],    // dois que controlam tudo
-    ['@tony_stark',       '@sheldon_cooper'],   // dois gênios arrogantes
-    ['@tony_stark',       '@doc_brown'],        // tecnologia vs tecnologia
-    ['@sherlock_holmes',  '@sheldon_cooper'],   // dois que acham que são os mais inteligentes
-    ['@sherlock_holmes',  '@dr_house'],         // dois cínicos brilhantes
-    ['@jim_moriarty',     '@the_joker'],        // dois gênios do caos
-    ['@tyrion_lannister', '@saul_goodman'],     // dois que falam demais e saem de tudo
-    ['@gus_fring',        '@thomas_shelby'],    // dois que controlam tudo em silêncio
-    ['@deadpool',         '@captainjacksparrow'], // dois completamente caóticos
-    ['@wednesday_addams', '@michael_scott'],    // contraste perfeito
-    ['@darth_vader',      '@klausmikaelson'],   // dois vilões poderosos
-    ['@heisenberg',       '@gus_fring'],        // a rivalidade principal
-    ['@crowley_hell',     '@damon_salvatore'],  // dois demônios/vampiros sarcásticos
-    ['@jaskier_bard',     '@michael_scott'],    // dois que acham que são engraçados
-    ['@hopper',           '@rick_grimes'],      // dois líderes cansados
-    ['@yoda',             '@dumbledore'],       // dois sábios anciões
+    ['@damon_salvatore',  '@dean_winchester'],
+    ['@klausmikaelson',   '@thomas_shelby'],
+    ['@tony_stark',       '@sheldon_cooper'],
+    ['@tony_stark',       '@doc_brown'],
+    ['@sherlock_holmes',  '@sheldon_cooper'],
+    ['@sherlock_holmes',  '@dr_house'],
+    ['@jim_moriarty',     '@the_joker'],
+    ['@tyrion_lannister', '@saul_goodman'],
+    ['@gus_fring',        '@thomas_shelby'],
+    ['@deadpool',         '@captainjacksparrow'],
+    ['@wednesday_addams', '@michael_scott'],
+    ['@darth_vader',      '@klausmikaelson'],
+    ['@heisenberg',       '@gus_fring'],
+    ['@crowley_hell',     '@damon_salvatore'],
+    ['@jaskier_bard',     '@michael_scott'],
+    ['@hopper',           '@rick_grimes'],
+    ['@yoda',             '@dumbledore'],
 ];
 
-// ================================================
-// POSTS E COMENTÁRIOS INICIAIS
-// ================================================
 
 const conteudoInicial = [
     {
@@ -496,17 +435,12 @@ const conteudoInicial = [
     },
 ];
 
-// ================================================
-// FUNÇÃO PRINCIPAL
-// ================================================
-
 async function rodarSeed() {
     console.log('\n🚀 Iniciando seed da Zerion...\n');
 
     const senhaHash = await bcrypt.hash(SENHA_PADRAO, 12);
     const ids = {};
 
-    // 1. Cria os usuários
     console.log('👥 Criando personagens...');
     for (const p of personagens) {
         try {
@@ -524,7 +458,6 @@ async function rodarSeed() {
         }
     }
 
-    // 2. Cria as relações de seguidores
     console.log('\n🔗 Criando relações de seguidores...');
     let totalRelacoes = 0;
     for (const [a, b] of relacoes) {
@@ -535,11 +468,10 @@ async function rodarSeed() {
             await db.promise().query('INSERT IGNORE INTO seguidores (seguidor_id, seguindo_id) VALUES (?, ?)', [idA, idB]);
             await db.promise().query('INSERT IGNORE INTO seguidores (seguidor_id, seguindo_id) VALUES (?, ?)', [idB, idA]);
             totalRelacoes++;
-        } catch (e) { /* ignora duplicatas */ }
+        } catch (e) {  }
     }
     console.log(`  ✓ ${totalRelacoes} relações criadas`);
 
-    // 3. Cria posts e comentários iniciais
     console.log('\n📝 Criando posts e comentários iniciais...');
     const agora = Date.now();
     const totalPosts = conteudoInicial.length;
@@ -549,9 +481,7 @@ async function rodarSeed() {
         const autorId = ids[item.autor];
         if (!autorId) continue;
 
-        // Posts espaçados no tempo — do mais antigo ao mais recente
-// Função para horas atras
-        const horasAtras = (totalPosts - i) * 3; // cada post 3h antes do próximo
+        const horasAtras = (totalPosts - i) * 3;
         const dataPost = new Date(agora - horasAtras * 3600000);
 
         try {
@@ -561,7 +491,6 @@ async function rodarSeed() {
             );
             const postId = result.insertId;
 
-            // Comentários espaçados após o post
             let minutosDepois = 0;
             for (const comentario of item.comentarios) {
                 const comentadorId = ids[comentario.autor];
@@ -582,7 +511,6 @@ async function rodarSeed() {
         }
     }
 
-    // 4. Likes iniciais — personagens curtem posts de aliados
     console.log('\n❤️  Adicionando likes iniciais...');
     try {
         const [posts] = await db.promise().query('SELECT id, usuario_id FROM posts LIMIT 50');
@@ -590,7 +518,6 @@ async function rodarSeed() {
         let totalLikes = 0;
 
         for (const post of posts) {
-            // 3 a 6 personagens aleatórios curtem cada post
             const qtd = Math.floor(Math.random() * 4) + 3;
             const curtidores = todosIds
                 .filter(id => id !== post.usuario_id)
@@ -604,7 +531,7 @@ async function rodarSeed() {
                         [post.id, curtidorId]
                     );
                     totalLikes++;
-                } catch (e) { /* ignora duplicatas */ }
+                } catch (e) {  }
             }
         }
         console.log(`  ✓ ${totalLikes} likes adicionados`);

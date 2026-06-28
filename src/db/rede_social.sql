@@ -1,7 +1,6 @@
 CREATE DATABASE IF NOT EXISTS rede_social;
 USE rede_social;
 
--- Usuários
 CREATE TABLE IF NOT EXISTS usuarios (
     id INT AUTO_INCREMENT PRIMARY KEY,
     nome VARCHAR(100),
@@ -17,7 +16,6 @@ CREATE TABLE IF NOT EXISTS usuarios (
     criado_em TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
--- Posts
 CREATE TABLE IF NOT EXISTS posts (
     id INT AUTO_INCREMENT PRIMARY KEY,
     usuario_id INT NOT NULL,
@@ -27,7 +25,6 @@ CREATE TABLE IF NOT EXISTS posts (
     FOREIGN KEY (usuario_id) REFERENCES usuarios(id) ON DELETE CASCADE
 );
 
--- Seguidores
 CREATE TABLE IF NOT EXISTS seguidores (
     id INT AUTO_INCREMENT PRIMARY KEY,
     seguidor_id INT NOT NULL,
@@ -42,7 +39,6 @@ UPDATE usuarios
 SET foto_perfil = 'https://imgur.com/gallery/damon-salvatore-1CkAu#D0BDusW'
 WHERE id = 1;
 
--- Likes
 CREATE TABLE IF NOT EXISTS likes (
     id INT AUTO_INCREMENT PRIMARY KEY,
     post_id INT NOT NULL,
@@ -53,7 +49,6 @@ CREATE TABLE IF NOT EXISTS likes (
     UNIQUE KEY unico_like (post_id, usuario_id)
 );
 
--- Comentários
 CREATE TABLE IF NOT EXISTS comentarios (
     id INT AUTO_INCREMENT PRIMARY KEY,
     post_id INT NOT NULL,
@@ -64,7 +59,6 @@ CREATE TABLE IF NOT EXISTS comentarios (
     FOREIGN KEY (usuario_id) REFERENCES usuarios(id) ON DELETE CASCADE
 );
 
--- Bloqueios
 CREATE TABLE IF NOT EXISTS bloqueios (
     id INT AUTO_INCREMENT PRIMARY KEY,
     bloqueador_id INT NOT NULL,
@@ -75,7 +69,6 @@ CREATE TABLE IF NOT EXISTS bloqueios (
     UNIQUE KEY unico_bloqueio (bloqueador_id, bloqueado_id)
 );
 
--- Mensagens
 CREATE TABLE IF NOT EXISTS mensagens (
     id INT AUTO_INCREMENT PRIMARY KEY,
     remetente_id INT NOT NULL,

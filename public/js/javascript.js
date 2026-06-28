@@ -1,7 +1,3 @@
-// ================================================
-// ZERION — javascript.js (feed)
-// ================================================
-
 const botaoPostar   = document.getElementById("btn-postar");
 const botaoAnexar   = document.getElementById("btn-anexar");
 const textarea      = document.getElementById("itexto");
@@ -12,7 +8,6 @@ const previewImagem = document.getElementById("preview-imagem");
 const usuarioLogado = JSON.parse(localStorage.getItem("usuario"));
 let imagemSelecionada = "";
 
-// Avatar do criar post — com fallback ícone
 const avatarCriar = document.querySelector(".Avatar");
 if (avatarCriar) {
     if (usuarioLogado?.foto_perfil) {
@@ -24,10 +19,6 @@ if (avatarCriar) {
         avatarCriar.innerHTML = `<i class="fa-solid fa-user-astronaut"></i>`;
     }
 }
-
-// ================================================
-// TIMESTAMP RELATIVO
-// ================================================
 
 function tempoRelativo(dataStr) {
     const agora = new Date();
@@ -43,18 +34,10 @@ function tempoRelativo(dataStr) {
     return data.toLocaleDateString("pt-BR", { day: "2-digit", month: "short" });
 }
 
-// ================================================
-// BADGE VERIFICADO
-// ================================================
-
 function badgeVerificado(verificado) {
     if (!verificado) return "";
     return `<i class="fa-solid fa-circle-check badge-verificado" title="Verificado"></i>`;
 }
-
-// ================================================
-// ANEXAR IMAGEM
-// ================================================
 
 botaoAnexar.addEventListener("click", () => inputImagem.click());
 
@@ -68,10 +51,6 @@ inputImagem.addEventListener("change", () => {
     };
     leitor.readAsDataURL(arquivo);
 });
-
-// ================================================
-// POSTAR
-// ================================================
 
 botaoPostar.addEventListener("click", async () => {
     if (textarea.value.trim() === "" && imagemSelecionada === "") return;
@@ -107,10 +86,6 @@ botaoPostar.addEventListener("click", async () => {
     }
 });
 
-// ================================================
-// CARREGAR POSTS
-// ================================================
-
 async function carregarPosts() {
     try {
         const viewerId = usuarioLogado?.id || 0;
@@ -134,10 +109,6 @@ async function carregarPosts() {
         console.error("Erro ao carregar posts:", erro);
     }
 }
-
-// ================================================
-// RENDERIZAR POST
-// ================================================
 
 let _postCardIndex = 0;
 
@@ -230,7 +201,6 @@ function renderizarPost(post) {
         ca.innerHTML = "";
     }
 
-    // Repost — mantém JS pois não tem classe dedicada no CSS
     if (jaRepostou) {
         const btnRepostEl = item.querySelector(".btn-repost");
         btnRepostEl.querySelector("i").style.color                     = "var(--neon-ciano)";
@@ -272,10 +242,6 @@ function renderizarPost(post) {
     publicacoes.appendChild(item);
 }
 
-// ================================================
-// DELETAR POST
-// ================================================
-
 async function deletarPost(post_id, itemEl) {
     if (!confirm("Excluir esta transmissão?")) return;
 
@@ -297,10 +263,6 @@ async function deletarPost(post_id, itemEl) {
     }
 }
 
-// ================================================
-// CURTIR / DESCURTIR — 100% via classe CSS
-// ================================================
-
 async function toggleLike(e) {
     if (!usuarioLogado) return;
     const btn      = e.currentTarget;
@@ -320,7 +282,6 @@ async function toggleLike(e) {
         const { total } = await resposta.json();
         if (span) span.textContent = total;
 
-        // Só alterna a classe — o CSS cuida da cor
         if (jaCurtiu) {
             btn.classList.remove("curtido");
         } else {
@@ -331,10 +292,6 @@ async function toggleLike(e) {
         console.error("Erro ao curtir:", erro);
     }
 }
-
-// ================================================
-// COMENTÁRIOS
-// ================================================
 
 async function toggleComentarios(e) {
     const btn      = e.currentTarget;
@@ -439,10 +396,6 @@ async function enviarComentario(post_id, input, postCard) {
     } catch (erro) { console.error("Erro ao comentar:", erro); }
 }
 
-// ================================================
-// REPOST
-// ================================================
-
 async function toggleRepost(e) {
     if (!usuarioLogado) return;
     const btn        = e.currentTarget;
@@ -476,9 +429,5 @@ async function toggleRepost(e) {
         console.error("Erro ao repostar:", erro);
     }
 }
-
-// ================================================
-// INICIA
-// ================================================
 
 carregarPosts();
