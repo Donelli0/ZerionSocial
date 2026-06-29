@@ -36,30 +36,6 @@ class PostRepository {
             FROM posts
             JOIN usuarios ON posts.usuario_id = usuarios.id
 
-            UNION ALL
-
-            SELECT
-                posts.id,
-                posts.usuario_id,
-                posts.conteudo,
-                posts.imagem,
-                posts.criado_em,
-                usuarios.username,
-                usuarios.foto_perfil,
-                usuarios.verificado,
-                repostador.username AS repostado_por,
-                reposts.usuario_id  AS repostado_por_id,
-                reposts.criado_em   AS ordem_tempo,
-                (SELECT COUNT(*) FROM likes       WHERE likes.post_id       = posts.id) AS total_likes,
-                (SELECT COUNT(*) FROM comentarios WHERE comentarios.post_id = posts.id) AS total_comentarios,
-                (SELECT COUNT(*) FROM reposts     WHERE reposts.post_id     = posts.id) AS total_reposts,
-                (SELECT COUNT(*) FROM likes       WHERE likes.post_id       = posts.id AND likes.usuario_id   = ?) AS ja_curtiu,
-                (SELECT COUNT(*) FROM reposts     WHERE reposts.post_id     = posts.id AND reposts.usuario_id = ?) AS ja_repostou
-            FROM reposts
-            JOIN posts    ON reposts.post_id     = posts.id
-            JOIN usuarios ON posts.usuario_id    = usuarios.id
-            JOIN usuarios AS repostador ON reposts.usuario_id = repostador.id
-
             ORDER BY ordem_tempo DESC
         `;
         return db.promise().query(sql, [uid, uid, uid, uid]);

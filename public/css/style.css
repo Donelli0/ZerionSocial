@@ -752,11 +752,11 @@ nav#navegacao a.ativo {
 }
 
 .badge-verificado {
-    color: var(--neon-ciano);
-    font-size: 0.75rem;
-    margin-left: 4px;
-    vertical-align: middle;
-    filter: drop-shadow(0 0 4px rgba(0, 242, 254, 0.5));
+    color: #FFD700;
+    font-size: 0.7rem;
+    margin-left: 3px;
+    vertical-align: super;
+    filter: drop-shadow(0 0 4px rgba(255, 215, 0, 0.6));
 }
 
 @media (min-width: 768px) and (max-width: 1023px) {
