@@ -15,19 +15,6 @@ class MensagemController {
       }
     }
 
-
-    async listarConversas(req, res) {
-        try {
-            const { id } = req.params;
-            const conversas = await MensagemService.listarConversas(id);
-            res.json(conversas);
-        } catch (error) {
-            console.error(error);
-            res.status(500).json({ msg: 'Erro ao listar conversas' });
-        }
-    }
-
-
     async conversa(req, res) {
         try {
             const { id } = req.params;
