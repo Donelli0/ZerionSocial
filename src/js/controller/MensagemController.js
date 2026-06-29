@@ -5,14 +5,14 @@ class MensagemController {
 
 
     async enviar(req, res) {
-        try {
-            const { remetente_id, destinatario_id, conteudo } = req.body;
-            await MensagemServiceInstance.enviar(remetente_id, destinatario_id, conteudo);
-            res.json({ msg: 'Mensagem enviada' });
-        } catch (error) {
-            console.error(error);
-            res.status(500).json({ msg: 'Erro ao enviar mensagem' });
-        }
+    try {
+        const { remetente_id, destinatario_id, conteudo } = req.body;
+        const [resultado] = await MensagemServiceInstance.enviar(remetente_id, destinatario_id, conteudo);
+        res.json({ msg: 'Mensagem enviada', id: resultado.insertId });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ msg: 'Erro ao enviar mensagem' });
+      }
     }
 
 
