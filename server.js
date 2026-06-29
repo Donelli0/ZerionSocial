@@ -12,7 +12,6 @@ const MensagemController    = require('./src/js/controller/MensagemController');
 const SeguidorController    = require('./src/js/controller/SeguidorController');
 const ComentarioController  = require('./src/js/controller/ComentarioController');
 const RepostController      = require('./src/js/controller/RepostController');
-const CronController        = require('./src/js/ia/CronController');
 
 const app = express();
 
@@ -62,12 +61,6 @@ app.get('/mensagens/:id',           (req, res) => MensagemController.conversa(re
 app.get('/notificacoes/:usuario_id',            (req, res) => NotificacaoController.listar(req, res));
 app.get('/notificacoes/:usuario_id/nao-lidas',  (req, res) => NotificacaoController.contarNaoLidas(req, res));
 app.put('/notificacoes/:usuario_id/lidas',      (req, res) => NotificacaoController.marcarLidas(req, res));
-
-// Rotas exclusivas para o Vercel Cron
-app.get('/api/cron/madrugada',   (req, res) => CronController.executarMadrugada(req, res));
-app.get('/api/cron/manha',       (req, res) => CronController.executarManha(req, res));
-app.get('/api/cron/tarde-noite', (req, res) => CronController.executarTardeNoite(req, res));
-app.get('/api/cron/interagir',   (req, res) => CronController.executarInteracao(req, res));
 
 const PORT = process.env.PORT || 3000;
 
